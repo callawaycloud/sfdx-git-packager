@@ -1,6 +1,7 @@
-import { basename, extname } from 'path';
+import { extname } from 'path';
 import { getFiles } from './util';
 
+// these need to be rewitten for windows... maybe use globs instead
 const AURA_REGEX = /(.*\/aura\/\w*)\/.*/;
 const COMP_META = /.*(.cls|\.trigger|\.page|\.component)-meta.xml/;
 const STATIC_RESOURCE_FOLDER_REGEX = /(.*\/staticresources\/\w*)\/.*/;
