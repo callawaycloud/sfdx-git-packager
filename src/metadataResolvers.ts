@@ -2,6 +2,7 @@ import { extname } from 'path';
 import { getFiles } from './util';
 
 const AURA_REGEX = /(.*\/aura\/.*)\/.*/;
+const COMP_META = /.*(.cls|\.trigger|\.page|\.component)-meta.xml/;
 
 interface MetadataResolver {
   match: ((path: string) => boolean) | RegExp;
@@ -16,6 +17,12 @@ const metadataResolvers: MetadataResolver[] = [
     },
     getMetadataPaths: async (path: string) => {
       return [path, path + '-meta.xml'];
+    }
+  },
+  {
+    match: COMP_META,
+    getMetadataPaths: async (path: string) => {
+      return [path, path.replace('-meta.xml', '')];
     }
   },
   {
