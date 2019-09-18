@@ -1,0 +1,6 @@
+{
+  "commandDescription": "Generates a Metadata Package using the differences between two git refs (branch or commit)",
+  "outputdirDescription": "The directory to output the generated package and metadata to",
+  "toBranchDescription": "The git ref (branch or commit) which we are deploying into. Defaults to master",
+  "fromBranchDescription": "The git ref (branch or commit) which we are deploying from. If left blank, will use working copy"
+}
