@@ -47,9 +47,6 @@ OPTIONS
   -t, --targetref=targetref
       The git ref (branch or commit) which we are deploying into. Defaults to master
 
-  --json
-      format output as json
-
   --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)
       [default: warn] logging level for this command invocation
 
