@@ -1,6 +1,6 @@
 # sfdx-git-packager
 
-Generates a metadata package (package.xml & files) for differences between two branches/commits.    
+Generates a metadata package (`package.xml` & source files) for differences between two branches/commits.    
 
 **Currently supports:**
 
