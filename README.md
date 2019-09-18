@@ -10,11 +10,11 @@ Generates a metadata package (`package.xml` & source files) for differences betw
 - Aura
 - CustomObject
 - CustomField
+- StaticResources
 - all other simple *-meta.xml files
 
 **Not yet supported:**
 
-- Static resources
 - LWC
 - ??? (please submit an issue if you run into anything else)
 

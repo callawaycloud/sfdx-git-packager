@@ -27,9 +27,17 @@ export async function copyFileFromRef(path: string, ref: string, destination: st
 
 export async function getFiles(dir: string): Promise<string[]> {
   const dirents = await fs.readdir(dir, { withFileTypes: true });
-  const files = dirents.map(dirent => {
+
+  const files = [];
+  for (const dirent of dirents) {
     const res = resolve(dir, dirent.name);
-    return dirent.isDirectory() ? getFiles(res) : res;
-  });
+    if (dirent.isDirectory()) {
+      files.push(await getFiles(res));
+    } else {
+      files.push(res);
+    }
+
+  }
+
   return Array.prototype.concat(...files);
 }

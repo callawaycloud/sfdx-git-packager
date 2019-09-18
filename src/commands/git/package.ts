@@ -117,8 +117,10 @@ export default class Package extends SfdxCommand {
         this.ux.warn(`Could not resolve metadata for ${path}`);
         continue;
       }
+      console.log(metadataPaths);
 
       for (let mdPath of metadataPaths) {
+
         if (isAbsolute(mdPath)) {
           mdPath = relative(projectPath, mdPath);
         }
