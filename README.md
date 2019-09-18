@@ -17,6 +17,7 @@ Generates a metadata package (`package.xml` & source files) for differences betw
 
 - LWC
 - ??? (please submit an issue if you run into anything else)
+- Windows :/ (help wanted)
 
 ## Installation
 
@@ -46,6 +47,9 @@ OPTIONS
 
   -t, --targetref=targetref
       The git ref (branch or commit) which we are deploying into. Defaults to master
+
+  -f, --force
+      Continue even if source is behind target
 
   --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)
       [default: warn] logging level for this command invocation
