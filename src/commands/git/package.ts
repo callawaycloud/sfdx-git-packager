@@ -32,7 +32,8 @@ export default class Package extends SfdxCommand {
     // flag with a value (-n, --name=VALUE)
     sourceref: flags.string({ char: 's', description: messages.getMessage('fromBranchDescription') }),
     targetref: flags.string({ char: 't', description: messages.getMessage('toBranchDescription') }),
-    outputdir: flags.string({ char: 'd', description: messages.getMessage('outputdirDescription'), required: true })
+    outputdir: flags.string({ char: 'd', description: messages.getMessage('outputdirDescription'), required: true }),
+    force: flags.boolean({ char: 'f', description: messages.getMessage('force')})
   };
 
   // Comment this out if your command does not require an org username
@@ -47,20 +48,25 @@ export default class Package extends SfdxCommand {
   public async run(): Promise<AnyJson> {
 
     const toBranch = this.flags.targetref || 'master';
-    const fromBranch = this.flags.sourceRef;
+    const fromBranch = this.flags.sourceref;
     const diffArgs = ['--no-pager', 'diff', '--name-status', toBranch];
     const dir = __dirname;
     if (fromBranch) {
       diffArgs.push(fromBranch);
     }
-    // this.ux.log(`Creating Package for ${fromBranch ? fromBranch : 'working copy'} -> ${toBranch}`);
-    // this.ux.log(`DIFF CMD: git ${diffArgs.join(' ')}`);
+
     try {
-      if (fromBranch) {
-        const aheadBehind = await spawnPromise('git', ['rev-list', '--left-right', '--count', `${toBranch}...${fromBranch}`]);
-        const behind = Number(aheadBehind.split(/(\s+)/)[0]);
-        if (behind > 0) {
-          this.ux.warn(`${fromBranch} is ${behind} commit(s) behind ${toBranch}!  You may want to merge ${toBranch} into ${fromBranch} before deploying!`);
+      const diffRefs = `${toBranch}...` + (fromBranch ? fromBranch : '');
+      const aheadBehind = await spawnPromise('git', ['rev-list', '--left-right', '--count', diffRefs]);
+      const behind = Number(aheadBehind.split(/(\s+)/)[0]);
+      if (behind > 0) {
+        const behindMessage = `${fromBranch ? fromBranch : '"working tree"'} is ${behind} commit(s) behind ${toBranch}!  You probably want to rebase ${toBranch} into ${fromBranch} before deploying!`;
+        if (!this.flags.force) {
+          this.ux.warn(behindMessage);
+          this.ux.error('Use -f to generate package anyways.');
+          return;
+        } else {
+          this.ux.warn(behindMessage);
         }
       }
 
@@ -84,7 +90,7 @@ export default class Package extends SfdxCommand {
     // throw new SfdxError(messages.getMessage('errorNoOrgResults', [this.org.getOrgId()]));
     // }
 
-    return { outputString: 'abc' };
+    return { outputString: '' };
   }
 
   private async setupTmpProject(diffOutput: string, projectPath: string, targetRef: string) {
@@ -115,7 +121,7 @@ export default class Package extends SfdxCommand {
         if (isAbsolute(mdPath)) {
           mdPath = relative(projectPath, mdPath);
         }
-        console.log(mdPath);
+
         const newPath = join(outDir, mdPath);
         await fs.mkdirp(dirname(newPath));
         if (targetRef) {
