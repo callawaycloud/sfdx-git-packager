@@ -101,12 +101,13 @@ export default class Package extends SfdxCommand {
     for (const line of lines) {
       const status = line.split('\t')[0];
 
-      // could even build a "distructivechanges.xml"
+      // [TODO] build a "distructivechanges.xml"
       if (status === 'D') {
         continue;
       }
+
       const path = line.split('\t')[1];
-      if (!path) {
+      if (!path || path.startsWith('.')) { // should instead check that path is part of one of the sfdx projects folders
         continue;
       }
 
