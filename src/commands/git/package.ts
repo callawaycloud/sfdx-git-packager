@@ -77,7 +77,7 @@ export default class Package extends SfdxCommand {
       await this.setupTmpProject(diff, projectPath, fromBranch);
       process.chdir(join(projectPath, TEMP));
       await spawnPromise('sfdx', ['force:source:convert', '-d', join('..', this.flags.outputdir)]);
-      // await spawnPromise('rm', ['-rf', join(projectPath, TEMP)]);
+      await spawnPromise('rm', ['-rf', join(projectPath, TEMP)]);
     } catch (e) {
       this.ux.error(e);
     } finally {
