@@ -1,6 +1,22 @@
 import { spawn } from 'child_process';
-import { promises as fs } from 'fs';
-import { resolve } from 'path';
+import * as fs from 'fs';
+import { join, resolve } from 'path';
+
+import ignore from 'ignore';
+
+const PKG_IGNORE = '.packageIgnore';
+
+export async function getIgnore(projectRoot: string) {
+  const ig = ignore();
+  const ignorePath = join(projectRoot, PKG_IGNORE);
+  console.log(ignorePath);
+  if (fs.existsSync(ignorePath)) {
+    const file = await (await fs.promises.readFile(ignorePath)).toString();
+    ig.add(file);
+  }
+
+  return ig;
+}
 
 export function spawnPromise(cmd: string, args: string[]) {
   return new Promise<string>((resolve, reject) => {
@@ -22,11 +38,11 @@ export function spawnPromise(cmd: string, args: string[]) {
 
 export async function copyFileFromRef(path: string, ref: string, destination: string) {
   const source = await spawnPromise('git', ['show', `${ref}:${path}`]);
-  await fs.writeFile(destination, source);
+  await fs.promises.writeFile(destination, source);
 }
 
 export async function getFiles(dir: string): Promise<string[]> {
-  const dirents = await fs.readdir(dir, { withFileTypes: true });
+  const dirents = await fs.promises.readdir(dir, { withFileTypes: true });
 
   const files = [];
   for (const dirent of dirents) {

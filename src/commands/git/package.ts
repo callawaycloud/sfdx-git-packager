@@ -4,7 +4,7 @@ import { AnyJson } from '@salesforce/ts-types';
 import { promises as fsPromise } from 'fs';
 import { dirname, isAbsolute, join, relative } from 'path';
 import { resolveMetadata } from '../../metadataResolvers';
-import { copyFileFromRef, spawnPromise } from '../../util';
+import { copyFileFromRef, getIgnore, spawnPromise } from '../../util';
 
 interface DiffResults {
   changed: string[];
@@ -76,7 +76,7 @@ export default class Package extends SfdxCommand {
       }
 
       const diff = await spawnPromise('git', diffArgs);
-      const changes = this.getChanged(diff);
+      const changes = await this.getChanged(diff);
       if (!changes.changed.length) {
         this.ux.warn('No changes!');
         return; // nothing to do;
@@ -128,7 +128,8 @@ export default class Package extends SfdxCommand {
     }
   }
 
-  private getChanged(diffOutput: string): DiffResults {
+  private async getChanged(diffOutput: string): Promise<DiffResults> {
+    const ignore = await getIgnore(this.project.getPath());
     const lines = diffOutput.split(require('os').EOL);
 
     // tuple of additions, deletions
@@ -137,12 +138,14 @@ export default class Package extends SfdxCommand {
     for (const line of lines) {
       const parts  = line.split('\t');
       const status = parts[0];
-      // [TODO] build a "distructivechanges.xml"
       const path = parts[1];
-      if (!path || path.startsWith('.')) { // should instead check that path is part of one of the sfdx projects folders
+
+      // [TODO] should also check that path is part of one of the sfdx projects folders
+      if (!path || path.startsWith('.') || ignore.ignores(path)) {
         continue;
       }
 
+      // [TODO] build a "distructivechanges.xml"
       if (status === 'D') {
         removed.push(path);
       } else {

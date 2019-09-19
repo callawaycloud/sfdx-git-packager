@@ -64,3 +64,7 @@ EXAMPLES
   deployments/my-awesome-feature
   $ sfdx git:package -t master -d deployments/my-working-copy
 ```
+
+### Ignore Files
+
+If you wish to prevent certain files from being included in a package, you can create a `.packageIgnore` in the root of your project.  This works similar to [`.gitIgnore`](https://git-scm.com/docs/gitignore).  You can add globs to prevent source path from being picked up.
