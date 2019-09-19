@@ -19,7 +19,7 @@ export async function getIgnore(projectRoot: string) {
 
 export function spawnPromise(cmd: string, args: string[]) {
   return new Promise<string>((resolve, reject) => {
-    const diffProcess = spawn(cmd, args);
+    const diffProcess = spawn(cmd, args, {shell: true});
     let stdo = '';
     let err = '';
     diffProcess.stdout.on('data', d => stdo += d.toString());
