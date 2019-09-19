@@ -27,7 +27,8 @@ export default class Package extends SfdxCommand {
 
   public static examples = [
     '$ sfdx git:package -s my-awesome-feature -t master -d deployments/my-awesome-feature',
-    '$ sfdx git:package -t master -d deployments/my-working-copy'
+    '$ sfdx git:package -d deployments/my-working-copy',
+    '$ sfdx git:package -s head -d deployments/my-working-copy'
   ];
 
   public static args = [

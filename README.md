@@ -47,8 +47,7 @@ OPTIONS
       (required) The directory to output the generated package and metadata to
 
   -s, --sourceref=sourceref
-      The git ref (branch or commit) which we are deploying from. If left blank, will 
-      use working copy
+      The git ref (branch or commit) which we are deploying from. If left blank, will use working copy
 
   -t, --targetref=targetref
       The git ref (branch or commit) which we are deploying into. Defaults to master
@@ -60,9 +59,9 @@ OPTIONS
       [default: warn] logging level for this command invocation
 
 EXAMPLES
-  $ sfdx git:package -s my-awesome-feature -t master -d 
-  deployments/my-awesome-feature
-  $ sfdx git:package -t master -d deployments/my-working-copy
+  $ sfdx git:package -s my-awesome-feature -t master -d deployments/my-awesome-feature
+  $ sfdx git:package -d deployments/my-working-copy
+  $ sfdx git:package -s head -d deployments/my-working-copy
 ```
 
 ### Ignore Files
