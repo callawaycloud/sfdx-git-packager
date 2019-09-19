@@ -9,7 +9,6 @@ const PKG_IGNORE = '.packageIgnore';
 export async function getIgnore(projectRoot: string) {
   const ig = ignore();
   const ignorePath = join(projectRoot, PKG_IGNORE);
-  console.log(ignorePath);
   if (fs.existsSync(ignorePath)) {
     const file = await (await fs.promises.readFile(ignorePath)).toString();
     ig.add(file);
