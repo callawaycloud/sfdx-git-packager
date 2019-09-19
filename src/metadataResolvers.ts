@@ -47,7 +47,6 @@ const metadataResolvers: MetadataResolver[] = [
     match: STATIC_RESOURCE_FOLDER_REGEX,
     getMetadataPaths: async (path: string) => {
       const appDir = STATIC_RESOURCE_FOLDER_REGEX.exec(path)[1];
-      console.log(appDir);
       return [...await getFiles(appDir), `${appDir}.resource-meta.xml`];
     }
   },
