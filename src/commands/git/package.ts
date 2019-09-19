@@ -112,6 +112,7 @@ export default class Package extends SfdxCommand {
       }
 
       for (let mdPath of metadataPaths) {
+        console.log(mdPath);
 
         if (isAbsolute(mdPath)) {
           mdPath = relative(projectPath, mdPath);
@@ -120,7 +121,7 @@ export default class Package extends SfdxCommand {
         const newPath = join(outDir, mdPath);
         await fs.mkdirp(dirname(newPath));
         if (targetRef) {
-          await copyFileFromRef(path, targetRef, newPath);
+          await copyFileFromRef(mdPath, targetRef, newPath);
         } else {
           await fsPromise.copyFile(mdPath, newPath);
         }
