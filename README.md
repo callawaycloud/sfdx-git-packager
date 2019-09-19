@@ -24,6 +24,8 @@ Generates a metadata package (`package.xml` & source files) for differences betw
 
 ## Installation
 
+(`NPM` based install coming soon)
+
 1. git clone
 1. cd
 1. `yarn/npm` install
