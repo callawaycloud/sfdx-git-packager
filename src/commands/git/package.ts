@@ -3,6 +3,7 @@ import { fs, Messages, SfdxError } from '@salesforce/core';
 import { AnyJson } from '@salesforce/ts-types';
 import { promises as fsPromise } from 'fs';
 import { dirname, isAbsolute, join, relative } from 'path';
+import * as rimraf from 'rimraf';
 import { resolveMetadata } from '../../metadataResolvers';
 import { copyFileFromRef, getIgnore, spawnPromise } from '../../util';
 
@@ -87,7 +88,7 @@ export default class Package extends SfdxCommand {
       await this.setupTmpProject(changes, projectPath, fromBranch);
       process.chdir(join(projectPath, TEMP));
       await spawnPromise('sfdx', ['force:source:convert', '-d', join('..', this.flags.outputdir)]);
-      await spawnPromise('rm', ['-rf', join(projectPath, TEMP)]);
+      rimraf.sync(join(projectPath, TEMP));
     } catch (e) {
       this.ux.error(e);
     } finally {
