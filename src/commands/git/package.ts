@@ -112,7 +112,6 @@ export default class Package extends SfdxCommand {
       }
 
       for (let mdPath of metadataPaths) {
-        console.log(mdPath);
 
         if (isAbsolute(mdPath)) {
           mdPath = relative(projectPath, mdPath);
