@@ -1,6 +1,9 @@
 # sfdx-git-packager
 
-Generates a metadata package (`package.xml` & source files) for differences between two branches/commits.    
+Generates a metadata package (`package.xml` & source files) for differences between two branches/commits.  
+
+![Generating vs working tree](https://user-images.githubusercontent.com/5217568/65200914-e587ed80-da45-11e9-917d-a63a3c91b29f.gif)
+*Example Generating vs "working tree" & master*
 
 **Currently supports:**
 
@@ -20,6 +23,8 @@ Generates a metadata package (`package.xml` & source files) for differences betw
 - Windows :/ (help wanted)
 
 ## Installation
+
+(`NPM` based install coming soon)
 
 1. git clone
 1. cd
