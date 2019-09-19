@@ -6,6 +6,11 @@ import { dirname, isAbsolute, join, relative } from 'path';
 import { resolveMetadata } from '../../metadataResolvers';
 import { copyFileFromRef, spawnPromise } from '../../util';
 
+interface DiffResults {
+  changed: string[];
+  removed: string[];
+}
+
 // Initialize Messages with the current plugin directory
 Messages.importMessagesDirectory(__dirname);
 
@@ -71,10 +76,15 @@ export default class Package extends SfdxCommand {
       }
 
       const diff = await spawnPromise('git', diffArgs);
+      const changes = this.getChanged(diff);
+      if (!changes.changed.length) {
+        this.ux.warn('No changes!');
+        return; // nothing to do;
+      }
 
       // create a temp project so we can leverage force:source:convert
       const projectPath = this.project.getPath();
-      await this.setupTmpProject(diff, projectPath, fromBranch);
+      await this.setupTmpProject(changes, projectPath, fromBranch);
       process.chdir(join(projectPath, TEMP));
       await spawnPromise('sfdx', ['force:source:convert', '-d', join('..', this.flags.outputdir)]);
       await spawnPromise('rm', ['-rf', join(projectPath, TEMP)]);
@@ -84,40 +94,22 @@ export default class Package extends SfdxCommand {
       process.chdir(dir);
     }
 
-    // Organization will always return one result, but this is an example of throwing an error
-    // The output and --json will automatically be handled for you.
-    // if (!result.records || result.records.length <= 0) {
-    // throw new SfdxError(messages.getMessage('errorNoOrgResults', [this.org.getOrgId()]));
-    // }
-
     return { outputString: '' };
   }
 
-  private async setupTmpProject(diffOutput: string, projectPath: string, targetRef: string) {
+  private async setupTmpProject(diff: DiffResults, projectPath: string, targetRef: string) {
+
     const outDir = join(projectPath, TEMP);
     await fs.mkdirp(outDir);
     await fsPromise.copyFile(join(projectPath, 'sfdx-project.json'), join(outDir, 'sfdx-project.json'));
-    const lines = diffOutput.split(require('os').EOL);
-    for (const line of lines) {
-      const status = line.split('\t')[0];
 
-      // [TODO] build a "distructivechanges.xml"
-      if (status === 'D') {
-        continue;
-      }
-
-      const path = line.split('\t')[1];
-      if (!path || path.startsWith('.')) { // should instead check that path is part of one of the sfdx projects folders
-        continue;
-      }
-
+    for (const path of diff.changed) {
       const metadataPaths = await resolveMetadata(path);
 
       if (!metadataPaths) {
         this.ux.warn(`Could not resolve metadata for ${path}`);
         continue;
       }
-      console.log(metadataPaths);
 
       for (let mdPath of metadataPaths) {
 
@@ -136,4 +128,32 @@ export default class Package extends SfdxCommand {
     }
   }
 
+  private getChanged(diffOutput: string): DiffResults {
+    const lines = diffOutput.split(require('os').EOL);
+
+    // tuple of additions, deletions
+    const changed = [];
+    const removed = [];
+    for (const line of lines) {
+      const parts  = line.split('\t');
+      const status = parts[0];
+      // [TODO] build a "distructivechanges.xml"
+      const path = parts[1];
+      if (!path || path.startsWith('.')) { // should instead check that path is part of one of the sfdx projects folders
+        continue;
+      }
+
+      if (status === 'D') {
+        removed.push(path);
+      } else {
+        changed.push(path);
+      }
+
+    }
+    return {
+      changed,
+      removed
+    };
+  }
 }
+
