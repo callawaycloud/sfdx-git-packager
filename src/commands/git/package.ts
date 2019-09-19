@@ -130,8 +130,7 @@ export default class Package extends SfdxCommand {
 
   private async getChanged(diffOutput: string): Promise<DiffResults> {
     const ignore = await getIgnore(this.project.getPath());
-    const lines = diffOutput.split(require('os').EOL);
-
+    const lines = diffOutput.split(/\r?\n/);
     // tuple of additions, deletions
     const changed = [];
     const removed = [];
