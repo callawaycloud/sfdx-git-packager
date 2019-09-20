@@ -95,7 +95,11 @@ export default class Package extends SfdxCommand {
     } catch (e) {
       this.ux.error(e);
     } finally {
-      rimraf.sync(join(this.projectPath, TEMP));
+      try {
+        rimraf.sync(join(this.projectPath, TEMP));
+      } catch (e) {
+        this.ux.warn(`Unable to remove ${TEMP}.  Please delete folder manually. \n ${JSON.stringify(e)}`);
+      }
       process.chdir(dir);
     }
 
