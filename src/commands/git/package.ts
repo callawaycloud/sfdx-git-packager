@@ -119,6 +119,10 @@ export default class Package extends SfdxCommand {
 
     const tempDir = join(this.projectPath, TEMP);
     await fs.mkdirp(tempDir);
+
+    for (const sourcePath of this.sourcePaths) {
+      await fs.mkdirp(join(tempDir, sourcePath));
+    }
     await fsPromise.copyFile(join(this.projectPath, 'sfdx-project.json'), join(tempDir, 'sfdx-project.json'));
 
     for (const path of diff.changed) {
