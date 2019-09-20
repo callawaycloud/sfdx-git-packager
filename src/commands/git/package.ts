@@ -54,8 +54,14 @@ export default class Package extends SfdxCommand {
 
   private projectPath: string;
 
+  private sourcePaths: string[];
+
   public async run(): Promise<AnyJson> {
     this.projectPath = this.project.getPath();
+
+    this.sourcePaths = ((await this.project.resolveProjectConfig())['packageDirectories'] as any[]).map(d => d.path);
+    console.log(this.sourcePaths);
+
     const toBranch = this.flags.targetref || 'master';
     const fromBranch = this.flags.sourceref;
     const diffArgs = ['--no-pager', 'diff', '--name-status', toBranch];
@@ -151,8 +157,16 @@ export default class Package extends SfdxCommand {
       const status = parts[0];
       const path = parts[1];
 
-      // [TODO] should also check that path is part of one of the sfdx projects folders
-      if (!path || path.startsWith('.') || ignore.ignores(path)) {
+      if (!path || path.startsWith('.') || ignore.ignores(path) ) {
+        continue;
+      }
+
+      // check that path is part of the sfdx projectDirectories...
+      //   There's most certainty a better way to do this
+      const inProjectSource = this.sourcePaths.reduce((inSource, sPath) => {
+        return inSource || path.startsWith(sPath);
+      }, false);
+      if (!inProjectSource) {
         continue;
       }
 
@@ -169,5 +183,5 @@ export default class Package extends SfdxCommand {
       removed
     };
   }
-}
 
+}
