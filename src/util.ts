@@ -1,4 +1,4 @@
-import { spawn } from 'child_process';
+import { spawn, SpawnOptions } from 'child_process';
 import * as fs from 'fs';
 import { join, resolve } from 'path';
 
@@ -17,9 +17,9 @@ export async function getIgnore(projectRoot: string) {
   return ig;
 }
 
-export function spawnPromise(cmd: string, args: string[]) {
+export function spawnPromise(cmd: string, args: string[], options?: SpawnOptions) {
   return new Promise<string>((resolve, reject) => {
-    const diffProcess = spawn(cmd, args, {shell: true});
+    const diffProcess = spawn(cmd, args, options);
     let stdo = '';
     let err = '';
     diffProcess.stdout.on('data', d => stdo += d.toString());

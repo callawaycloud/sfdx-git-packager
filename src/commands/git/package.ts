@@ -4,6 +4,7 @@ import { AnyJson } from '@salesforce/ts-types';
 import { promises as fsPromise } from 'fs';
 import { dirname, isAbsolute, join, relative } from 'path';
 import * as rimraf from 'rimraf';
+import * as tmp from 'tmp';
 import { resolveMetadata } from '../../metadataResolvers';
 import { copyFileFromRef, getIgnore, spawnPromise } from '../../util';
 
@@ -18,8 +19,6 @@ Messages.importMessagesDirectory(__dirname);
 // Load the specific messages for this file. Messages from @salesforce/command, @salesforce/core,
 // or any library that is using the messages framework can also be loaded this way.
 const messages = Messages.loadMessages('sfdx-git-packager', 'package');
-
-const TEMP = '.tmp-pkg-prj';
 
 export default class Package extends SfdxCommand {
 
@@ -60,7 +59,6 @@ export default class Package extends SfdxCommand {
     this.projectPath = this.project.getPath();
 
     this.sourcePaths = ((await this.project.resolveProjectConfig())['packageDirectories'] as any[]).map(d => d.path);
-    console.log(this.sourcePaths);
 
     const toBranch = this.flags.targetref || 'master';
     const fromBranch = this.flags.sourceref;
@@ -72,7 +70,7 @@ export default class Package extends SfdxCommand {
 
     try {
       const diffRefs = `${toBranch}...` + (fromBranch ? fromBranch : '');
-      const aheadBehind = await spawnPromise('git', ['rev-list', '--left-right', '--count', diffRefs]);
+      const aheadBehind = await spawnPromise('git', ['rev-list', '--left-right', '--count', diffRefs], {shell: true});
       const behind = Number(aheadBehind.split(/(\s+)/)[0]);
       if (behind > 0) {
         const behindMessage = `${fromBranch ? fromBranch : '"working tree"'} is ${behind} commit(s) behind ${toBranch}!  You probably want to rebase ${toBranch} into ${fromBranch} before deploying!`;
@@ -85,7 +83,7 @@ export default class Package extends SfdxCommand {
         }
       }
 
-      const diff = await spawnPromise('git', diffArgs);
+      const diff = await spawnPromise('git', diffArgs, {shell: true});
       const changes = await this.getChanged(diff);
       if (!changes.changed.length) {
         this.ux.warn('No changes!');
@@ -94,22 +92,12 @@ export default class Package extends SfdxCommand {
 
       // create a temp project so we can leverage force:source:convert
 
-      await this.setupTmpProject(changes, fromBranch);
-      process.chdir(join(this.projectPath, TEMP));
-
+      const tmpProject = await this.setupTmpProject(changes, fromBranch);
       const outDir = isAbsolute(this.flags.outputdir) ? this.flags.outputdir : join(this.projectPath, this.flags.outputdir);
-
-      await spawnPromise('sfdx', ['force:source:convert', '-d', outDir]);
+      await spawnPromise('sfdx', ['force:source:convert', '-d', outDir], {shell: true, cwd: tmpProject});
 
     } catch (e) {
       this.ux.error(e);
-    } finally {
-      try {
-        rimraf.sync(join(this.projectPath, TEMP));
-      } catch (e) {
-        this.ux.warn(`Unable to remove ${TEMP}.  Please delete folder manually. \n ${JSON.stringify(e)}`);
-      }
-      process.chdir(dir);
     }
 
     return { outputString: '' };
@@ -117,7 +105,15 @@ export default class Package extends SfdxCommand {
 
   private async setupTmpProject(diff: DiffResults, targetRef: string) {
 
-    const tempDir = join(this.projectPath, TEMP);
+    const tempDir = await new Promise<string>((resolve, reject) => {
+      tmp.dir((err, path, cleanupCallback) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(path);
+      });
+    });
+    // const tempDir = join(this.projectPath, TEMP);
     await fs.mkdirp(tempDir);
 
     for (const sourcePath of this.sourcePaths) {
@@ -148,6 +144,7 @@ export default class Package extends SfdxCommand {
         }
       }
     }
+    return tempDir;
   }
 
   private async getChanged(diffOutput: string): Promise<DiffResults> {
