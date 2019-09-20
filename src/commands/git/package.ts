@@ -3,7 +3,6 @@ import { fs, Messages, SfdxError } from '@salesforce/core';
 import { AnyJson } from '@salesforce/ts-types';
 import { promises as fsPromise } from 'fs';
 import { dirname, isAbsolute, join, relative } from 'path';
-import * as rimraf from 'rimraf';
 import * as tmp from 'tmp';
 import { resolveMetadata } from '../../metadataResolvers';
 import { copyFileFromRef, getIgnore, spawnPromise } from '../../util';
