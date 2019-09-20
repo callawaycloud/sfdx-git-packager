@@ -52,8 +52,10 @@ export default class Package extends SfdxCommand {
   // Set this to true if your command requires a project workspace; 'requiresProject' is false by default
   protected static requiresProject = true;
 
-  public async run(): Promise<AnyJson> {
+  private projectPath: string;
 
+  public async run(): Promise<AnyJson> {
+    this.projectPath = this.project.getPath();
     const toBranch = this.flags.targetref || 'master';
     const fromBranch = this.flags.sourceref;
     const diffArgs = ['--no-pager', 'diff', '--name-status', toBranch];
@@ -85,25 +87,26 @@ export default class Package extends SfdxCommand {
       }
 
       // create a temp project so we can leverage force:source:convert
-      const projectPath = this.project.getPath();
-      await this.setupTmpProject(changes, projectPath, fromBranch);
-      process.chdir(join(projectPath, TEMP));
+
+      await this.setupTmpProject(changes, fromBranch);
+      process.chdir(join(this.projectPath, TEMP));
       await spawnPromise('sfdx', ['force:source:convert', '-d', join('..', this.flags.outputdir)]);
-      rimraf.sync(join(projectPath, TEMP));
+
     } catch (e) {
       this.ux.error(e);
     } finally {
+      rimraf.sync(join(this.projectPath, TEMP));
       process.chdir(dir);
     }
 
     return { outputString: '' };
   }
 
-  private async setupTmpProject(diff: DiffResults, projectPath: string, targetRef: string) {
+  private async setupTmpProject(diff: DiffResults, targetRef: string) {
 
-    const outDir = join(projectPath, TEMP);
+    const outDir = join(this.projectPath, TEMP);
     await fs.mkdirp(outDir);
-    await fsPromise.copyFile(join(projectPath, 'sfdx-project.json'), join(outDir, 'sfdx-project.json'));
+    await fsPromise.copyFile(join(this.projectPath, 'sfdx-project.json'), join(outDir, 'sfdx-project.json'));
 
     for (const path of diff.changed) {
       const metadataPaths = await resolveMetadata(path);
@@ -116,7 +119,7 @@ export default class Package extends SfdxCommand {
       for (let mdPath of metadataPaths) {
 
         if (isAbsolute(mdPath)) {
-          mdPath = relative(projectPath, mdPath);
+          mdPath = relative(this.projectPath, mdPath);
         }
 
         const newPath = join(outDir, mdPath);
@@ -131,7 +134,7 @@ export default class Package extends SfdxCommand {
   }
 
   private async getChanged(diffOutput: string): Promise<DiffResults> {
-    const ignore = await getIgnore(this.project.getPath());
+    const ignore = await getIgnore(this.projectPath);
     const lines = diffOutput.split(/\r?\n/);
     // tuple of additions, deletions
     const changed = [];
