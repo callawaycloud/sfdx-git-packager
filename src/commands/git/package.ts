@@ -90,7 +90,10 @@ export default class Package extends SfdxCommand {
 
       await this.setupTmpProject(changes, fromBranch);
       process.chdir(join(this.projectPath, TEMP));
-      await spawnPromise('sfdx', ['force:source:convert', '-d', join('..', this.flags.outputdir)]);
+
+      const outDir = isAbsolute(this.flags.outputdir) ? this.flags.outputdir : join(this.projectPath, this.flags.outputdir);
+
+      await spawnPromise('sfdx', ['force:source:convert', '-d', outDir]);
 
     } catch (e) {
       this.ux.error(e);
@@ -108,9 +111,9 @@ export default class Package extends SfdxCommand {
 
   private async setupTmpProject(diff: DiffResults, targetRef: string) {
 
-    const outDir = join(this.projectPath, TEMP);
-    await fs.mkdirp(outDir);
-    await fsPromise.copyFile(join(this.projectPath, 'sfdx-project.json'), join(outDir, 'sfdx-project.json'));
+    const tempDir = join(this.projectPath, TEMP);
+    await fs.mkdirp(tempDir);
+    await fsPromise.copyFile(join(this.projectPath, 'sfdx-project.json'), join(tempDir, 'sfdx-project.json'));
 
     for (const path of diff.changed) {
       const metadataPaths = await resolveMetadata(path);
@@ -126,7 +129,7 @@ export default class Package extends SfdxCommand {
           mdPath = relative(this.projectPath, mdPath);
         }
 
-        const newPath = join(outDir, mdPath);
+        const newPath = join(tempDir, mdPath);
         await fs.mkdirp(dirname(newPath));
         if (targetRef) {
           await copyFileFromRef(mdPath, targetRef, newPath);
