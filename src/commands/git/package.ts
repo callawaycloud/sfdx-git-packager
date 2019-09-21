@@ -1,6 +1,7 @@
 import { flags, SfdxCommand } from '@salesforce/command';
-import { fs, Messages, SfdxError } from '@salesforce/core';
+import { fs, Messages } from '@salesforce/core';
 import { AnyJson } from '@salesforce/ts-types';
+import * as jsdiff from 'diff';
 import { promises as fsPromise } from 'fs';
 import { dirname, isAbsolute, join, relative } from 'path';
 import * as tmp from 'tmp';
@@ -29,6 +30,7 @@ export default class Package extends SfdxCommand {
     '$ sfdx git:package -s head -d deployments/my-working-copy'
   ];
 
+  // not sure what this does...
   public static args = [
     { name: 'file' }
   ];
@@ -36,8 +38,9 @@ export default class Package extends SfdxCommand {
   protected static flagsConfig = {
     // flag with a value (-n, --name=VALUE)
     sourceref: flags.string({ char: 's', description: messages.getMessage('fromBranchDescription') }),
-    targetref: flags.string({ char: 't', description: messages.getMessage('toBranchDescription') }),
+    targetref: flags.string({ char: 't', description: messages.getMessage('toBranchDescription'), default: 'master' }),
     outputdir: flags.string({ char: 'd', description: messages.getMessage('outputdirDescription'), required: true }),
+    ignorewhitespace: flags.boolean({ char: 'w', description: messages.getMessage('ignoreWhitespace')}),
     force: flags.boolean({ char: 'f', description: messages.getMessage('force')})
   };
 
@@ -59,10 +62,10 @@ export default class Package extends SfdxCommand {
 
     this.sourcePaths = ((await this.project.resolveProjectConfig())['packageDirectories'] as any[]).map(d => d.path);
 
-    const toBranch = this.flags.targetref || 'master';
+    const toBranch = this.flags.targetref;
     const fromBranch = this.flags.sourceref;
     const diffArgs = ['--no-pager', 'diff', '--name-status', toBranch];
-    const dir = __dirname;
+
     if (fromBranch) {
       diffArgs.push(fromBranch);
     }
@@ -74,8 +77,9 @@ export default class Package extends SfdxCommand {
       if (behind > 0) {
         const behindMessage = `${fromBranch ? fromBranch : '"working tree"'} is ${behind} commit(s) behind ${toBranch}!  You probably want to rebase ${toBranch} into ${fromBranch} before deploying!`;
         if (!this.flags.force) {
-          this.ux.warn(behindMessage);
-          this.ux.error('Use -f to generate package anyways.');
+          this.ux.warn(behindMessage + '\nUse -f to generate package anyways.');
+          this.ux.error();
+          this.exit(1);
           return;
         } else {
           this.ux.warn(behindMessage);
@@ -85,21 +89,24 @@ export default class Package extends SfdxCommand {
       const diff = await spawnPromise('git', diffArgs, {shell: true});
       const changes = await this.getChanged(diff);
       if (!changes.changed.length) {
-        this.ux.warn('No changes!');
-        return; // nothing to do;
+        this.ux.warn('No changes found!');
+        this.exit(1);
+        return;
       }
 
       // create a temp project so we can leverage force:source:convert
 
       const tmpProject = await this.setupTmpProject(changes, fromBranch);
       const outDir = isAbsolute(this.flags.outputdir) ? this.flags.outputdir : join(this.projectPath, this.flags.outputdir);
+
       await spawnPromise('sfdx', ['force:source:convert', '-d', outDir], {shell: true, cwd: tmpProject});
 
     } catch (e) {
       this.ux.error(e);
+      this.exit(1);
     }
 
-    return { outputString: '' };
+    return {};
   }
 
   private async setupTmpProject(diff: DiffResults, targetRef: string) {
@@ -161,6 +168,20 @@ export default class Package extends SfdxCommand {
         continue;
       }
 
+      if (this.flags.ignorewhitespace) {
+        const a = await spawnPromise('git', ['show', `${this.flags.targetref}:${path}`]);
+        let b: string;
+        if (this.flags.sourceref) {
+          b = await spawnPromise('git', ['show', `${this.flags.sourceref}:${path}`]);
+        } else {
+          b = (await fsPromise.readFile(path)).toString();
+        }
+
+        if (!hasNonWhitespaceChanges(a, b)) {
+          continue;
+        }
+      }
+
       // check that path is part of the sfdx projectDirectories...
       //   There's most certainty a better way to do this
       const inProjectSource = this.sourcePaths.reduce((inSource, sPath) => {
@@ -184,4 +205,15 @@ export default class Package extends SfdxCommand {
     };
   }
 
+}
+
+// checks two strings and returns true if they have "non-whitespace" changes (spaces or newlines)
+function hasNonWhitespaceChanges(a: string, b: string) {
+  const diffResults = jsdiff.diffLines(a, b, {ignoreWhitespace: true, newlineIsToken: true});
+  for (const result of diffResults) {
+      if (result.added || result.removed) {
+        return true;
+      }
+  }
+  return false;
 }

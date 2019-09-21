@@ -52,6 +52,9 @@ OPTIONS
   -t, --targetref=targetref
       The git ref (branch or commit) which we are deploying into. Defaults to master
 
+  -w, --ignorewhitespace
+      Don't package changes that are whitespace only
+
   -f, --force
       Continue even if source is behind target
 
