@@ -35,31 +35,41 @@ Generates a metadata package (`package.xml` & source files) for differences betw
 
 Must be run from inside an sfdx project with an initialized git repo.
 
-```
+<!-- commands -->
+* [`sfdx git:package -d <string> [-s <string>] [-t <string>] [-w] [-f] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-gitpackage--d-string--s-string--t-string--w--f---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+
+## `sfdx git:package -d <string> [-s <string>] [-t <string>] [-w] [-f] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
+
 Generates a Metadata Package using the differences between two git refs (branch or commit)
 
+```
 USAGE
-  $ sfdx git:package -d <string> [-f <string>] [-t <string>] [--json] [--loglevel 
+  $ sfdx git:package -d <string> [-s <string>] [-t <string>] [-w] [-f] [--json] [--loglevel 
   trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
 OPTIONS
-  -d, --outputdir=outputdir
-      (required) The directory to output the generated package and metadata to
+  -d, --outputdir=outputdir                                                         (required) The directory to output
+                                                                                    the generated package and metadata
+                                                                                    to
 
-  -s, --sourceref=sourceref
-      The git ref (branch or commit) which we are deploying from. If left blank, will use working copy
+  -f, --force                                                                       Continue even if source is behind
+                                                                                    target
 
-  -t, --targetref=targetref
-      The git ref (branch or commit) which we are deploying into. Defaults to master
+  -s, --sourceref=sourceref                                                         The git ref (branch or commit) which
+                                                                                    we are deploying from. If left
+                                                                                    blank, will use working copy
 
-  -w, --ignorewhitespace
-      Don't package changes that are whitespace only
+  -t, --targetref=targetref                                                         [default: master] The git ref
+                                                                                    (branch or commit) which we are
+                                                                                    deploying into. Defaults to master
 
-  -f, --force
-      Continue even if source is behind target
+  -w, --ignorewhitespace                                                            Don't package changes that are
+                                                                                    whitespace only
 
-  --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)
-      [default: warn] logging level for this command invocation
+  --json                                                                            format output as json
+
+  --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
+                                                                                    this command invocation
 
 EXAMPLES
   $ sfdx git:package -s my-awesome-feature -t master -d deployments/my-awesome-feature
@@ -67,6 +77,14 @@ EXAMPLES
   $ sfdx git:package -s head -d deployments/my-working-copy
 ```
 
+_See code: [lib/commands/git/package.js](https://github.com/ChuckJonas/sfdx-git-diff-to-pkg/blob/v0.0.0/lib/commands/git/package.js)_
+<!-- commandsstop -->
+
 ### Ignore Files
 
 If you wish to prevent certain files from being included in a package, you can create a `.packageIgnore` in the root of your project.  This works similar to [`.gitIgnore`](https://git-scm.com/docs/gitignore).  You can add globs to prevent source path from being picked up.
+
+
+## Disclaimer
+
+THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
