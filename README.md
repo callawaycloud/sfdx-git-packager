@@ -36,15 +36,15 @@ Generates a metadata package (`package.xml` & source files) for differences betw
 Must be run from inside an sfdx project with an initialized git repo.
 
 <!-- commands -->
-* [`sfdx git:package -d <string> [-s <string>] [-t <string>] [-w] [-f] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-gitpackage--d-string--s-string--t-string--w--f---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+* [`sfdx git:package -d <string> [-s <string>] [-t <string>] [-w] [--purge] [-f] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-gitpackage--d-string--s-string--t-string--w---purge--f---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
 
-## `sfdx git:package -d <string> [-s <string>] [-t <string>] [-w] [-f] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
+## `sfdx git:package -d <string> [-s <string>] [-t <string>] [-w] [--purge] [-f] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
 Generates a Metadata Package using the differences between two git refs (branch or commit)
 
 ```
 USAGE
-  $ sfdx git:package -d <string> [-s <string>] [-t <string>] [-w] [-f] [--json] [--loglevel 
+  $ sfdx git:package -d <string> [-s <string>] [-t <string>] [-w] [--purge] [-f] [--json] [--loglevel 
   trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
 OPTIONS
@@ -71,13 +71,16 @@ OPTIONS
   --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
                                                                                     this command invocation
 
+  --purge                                                                           Delete output dir if it already
+                                                                                    exists (without prompt)
+
 EXAMPLES
   $ sfdx git:package -s my-awesome-feature -t master -d deployments/my-awesome-feature
   $ sfdx git:package -d deployments/my-working-copy
   $ sfdx git:package -s head -d deployments/my-working-copy
 ```
 
-_See code: [lib/commands/git/package.js](https://github.com/ChuckJonas/sfdx-git-diff-to-pkg/blob/v0.0.0/lib/commands/git/package.js)_
+_See code: [lib/commands/git/package.js](https://github.com/ChuckJonas/sfdx-git-diff-to-pkg/blob/v0.0.1/lib/commands/git/package.js)_
 <!-- commandsstop -->
 
 ### Ignore Files
