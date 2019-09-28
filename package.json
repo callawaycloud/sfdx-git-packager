@@ -13,6 +13,7 @@
     "diff": "^4.0.1",
     "glob-regex": "^0.3.2",
     "ignore": "^5.1.4",
+    "rimraf": "^3.0.0",
     "tmp": "^0.1.0",
     "tslib": "^1",
     "xml2js": "^0.4.22"
@@ -23,6 +24,7 @@
     "@oclif/test": "^1",
     "@salesforce/dev-config": "1.4.1",
     "@types/chai": "^4",
+    "@types/rimraf": "^2.0.2",
     "@types/diff": "^4.0.2",
     "@types/mocha": "^5",
     "@types/node": "^10",
