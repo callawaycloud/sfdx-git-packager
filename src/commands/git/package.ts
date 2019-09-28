@@ -6,7 +6,7 @@ import { promises as fsPromise } from 'fs';
 import { dirname, isAbsolute, join, relative } from 'path';
 import * as tmp from 'tmp';
 import { resolveMetadata } from '../../metadataResolvers';
-import { copyFileFromRef, getIgnore, spawnPromise } from '../../util';
+import { copyFileFromRef, getIgnore, purgeFolder, spawnPromise } from '../../util';
 
 interface DiffResults {
   changed: string[];
@@ -41,6 +41,7 @@ export default class Package extends SfdxCommand {
     targetref: flags.string({ char: 't', description: messages.getMessage('toBranchDescription'), default: 'master' }),
     outputdir: flags.string({ char: 'd', description: messages.getMessage('outputdirDescription'), required: true }),
     ignorewhitespace: flags.boolean({ char: 'w', description: messages.getMessage('ignoreWhitespace')}),
+    purge: flags.boolean({ description: messages.getMessage('purgeDescription') }),
     force: flags.boolean({ char: 'f', description: messages.getMessage('force')})
   };
 
@@ -64,7 +65,7 @@ export default class Package extends SfdxCommand {
 
     const toBranch = this.flags.targetref;
     const fromBranch = this.flags.sourceref;
-    const diffArgs = ['--no-pager', 'diff', '--name-status', toBranch];
+    const diffArgs = ['--no-pager', 'diff', '--name-status', '--no-renames', toBranch];
 
     if (fromBranch) {
       diffArgs.push(fromBranch);
@@ -99,6 +100,35 @@ export default class Package extends SfdxCommand {
       const tmpProject = await this.setupTmpProject(changes, fromBranch);
       const outDir = isAbsolute(this.flags.outputdir) ? this.flags.outputdir : join(this.projectPath, this.flags.outputdir);
 
+      try {
+        const stat = await fs.stat(outDir);
+        if (stat.isDirectory()) {
+          let purge = false;
+          if (this.flags.purge) {
+            purge = true;
+          } else {
+            const resp = await this.ux.prompt(`The output path ${outDir} already exists.  How would you like to continue? (purge | merge | exit)`);
+            if (resp.toLocaleLowerCase() === 'purge') {
+              purge = true;
+            } else if (resp.toLocaleLowerCase() !== 'merge') {
+              this.exit(1);
+              return;
+            }
+          }
+          if (purge) {
+            this.ux.log(`Removing all files inside of ${outDir}`);
+            try {
+              await purgeFolder(outDir);
+            } catch (e) {
+              this.ux.error('Failed to remove files');
+              this.exit(1);
+              return;
+            }
+
+          }
+        }
+      } catch (e) {}
+
       await spawnPromise('sfdx', ['force:source:convert', '-d', outDir], {shell: true, cwd: tmpProject});
 
     } catch (e) {
@@ -112,7 +142,7 @@ export default class Package extends SfdxCommand {
   private async setupTmpProject(diff: DiffResults, targetRef: string) {
 
     const tempDir = await new Promise<string>((resolve, reject) => {
-      tmp.dir((err, path, cleanupCallback) => {
+      tmp.dir((err, path) => {
         if (err) {
           reject(err);
         }

@@ -1,8 +1,8 @@
 import { spawn, SpawnOptions } from 'child_process';
 import * as fs from 'fs';
-import { join, resolve } from 'path';
-
 import ignore from 'ignore';
+import { join, resolve } from 'path';
+import * as rimraf from 'rimraf';
 
 const PKG_IGNORE = '.packageIgnore';
 
@@ -18,7 +18,7 @@ export async function getIgnore(projectRoot: string) {
 }
 
 export function spawnPromise(cmd: string, args: string[], options?: SpawnOptions) {
-  return new Promise<string>((resolve, reject) => {
+  return new Promise<string>((res, reject) => {
     const diffProcess = spawn(cmd, args, options);
     let stdo = '';
     let err = '';
@@ -28,7 +28,7 @@ export function spawnPromise(cmd: string, args: string[], options?: SpawnOptions
 
     diffProcess.on('exit', code => {
       if (code === 0) {
-        return resolve(stdo);
+        return res(stdo);
       }
       reject(err);
     });
@@ -55,4 +55,27 @@ export async function getFiles(dir: string): Promise<string[]> {
   }
 
   return Array.prototype.concat(...files);
+}
+
+export async function purgeFolder(targetDir: string): Promise<void> {
+  const files = await fs.promises.readdir(targetDir);
+  for (const file of files) {
+    const stat = await fs.promises.stat(join(targetDir, file));
+    if (stat.isDirectory()) {
+      await purgeFolder(resolve(targetDir, file));
+    } else {
+      if (file.startsWith('.')) {
+        continue;
+      }
+      const fPath = join(targetDir, file);
+      await new Promise((res, rej) => {
+        rimraf(fPath, err => {
+          if (err) {
+            rej(err);
+          }
+          res();
+        });
+      });
+    }
+  }
 }
