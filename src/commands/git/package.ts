@@ -88,16 +88,19 @@ export default class Package extends SfdxCommand {
       }
 
       const diff = await spawnPromise('git', diffArgs, {shell: true});
-      const changes = await this.getChanged(diff);
-      if (!changes.changed.length) {
+      const diffResults = await this.getChanged(diff);
+      if (!diffResults.changed.length) {
         this.ux.warn('No changes found!');
         this.exit(1);
         return;
       }
 
-      // create a temp project so we can leverage force:source:convert
+      // create a temp project so we can leverlage force:source:convert for destructiveChanges
+      const tmpDeletProj = !diffResults.removed.length ? null : await this.setupTmpProject(diffResults.removed, null, true);
 
-      const tmpProject = await this.setupTmpProject(changes, fromBranch);
+
+      // create a temp project so we can leverage force:source:convert for primary deploy
+      const tmpProject = await this.setupTmpProject(diffResults.changed, fromBranch, false);
       const outDir = isAbsolute(this.flags.outputdir) ? this.flags.outputdir : join(this.projectPath, this.flags.outputdir);
 
       try {
@@ -128,9 +131,12 @@ export default class Package extends SfdxCommand {
           }
         }
       } catch (e) {}
-
       await spawnPromise('sfdx', ['force:source:convert', '-d', outDir], {shell: true, cwd: tmpProject});
-
+      if (diffResults.removed.length) {
+        const tempDeleteProjConverted = await this.mkTempDir();
+        await spawnPromise('sfdx', ['force:source:convert', '-d', tempDeleteProjConverted], {shell: true, cwd: tmpDeletProj});
+        await fsPromise.copyFile(`${tempDeleteProjConverted}/package.xml`,`${outDir}/destructiveChanges.xml`);
+      }
     } catch (e) {
       this.ux.error(e);
       this.exit(1);
@@ -139,8 +145,7 @@ export default class Package extends SfdxCommand {
     return {};
   }
 
-  private async setupTmpProject(diff: DiffResults, targetRef: string) {
-
+  private async mkTempDir() {
     const tempDir = await new Promise<string>((resolve, reject) => {
       tmp.dir((err, path) => {
         if (err) {
@@ -149,15 +154,20 @@ export default class Package extends SfdxCommand {
         resolve(path);
       });
     });
-    // const tempDir = join(this.projectPath, TEMP);
-    await fs.mkdirp(tempDir);
+    fs.mkdirp(tempDir);
+    return tempDir;
+  }
+
+  private async setupTmpProject(changed: string[], targetRef?: string, deletions?:boolean) {
+
+    const tempDir = await this.mkTempDir();
 
     for (const sourcePath of this.sourcePaths) {
       await fs.mkdirp(join(tempDir, sourcePath));
     }
     await fsPromise.copyFile(join(this.projectPath, 'sfdx-project.json'), join(tempDir, 'sfdx-project.json'));
 
-    for (const path of diff.changed) {
+    for (const path of changed) {
       const metadataPaths = await resolveMetadata(path);
 
       if (!metadataPaths) {
@@ -173,13 +183,18 @@ export default class Package extends SfdxCommand {
 
         const newPath = join(tempDir, mdPath);
         await fs.mkdirp(dirname(newPath));
-        if (targetRef) {
-          await copyFileFromRef(mdPath, targetRef, newPath);
+        if (deletions) {
+          await fsPromise.writeFile(newPath, 'DELETE');
         } else {
-          await fsPromise.copyFile(mdPath, newPath);
+          if (targetRef) {
+            await copyFileFromRef(mdPath, targetRef, newPath);
+          } else {
+            await fsPromise.copyFile(mdPath, newPath);
+          }
         }
       }
     }
+
     return tempDir;
   }
 
@@ -221,7 +236,7 @@ export default class Package extends SfdxCommand {
         continue;
       }
 
-      // [TODO] build a "distructivechanges.xml"
+      // [TODO] build a "destructivechanges.xml"
       if (status === 'D') {
         removed.push(path);
       } else {
