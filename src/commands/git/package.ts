@@ -5,7 +5,7 @@ import * as jsdiff from 'diff';
 import { promises as fsPromise } from 'fs';
 import { dirname, isAbsolute, join, relative } from 'path';
 import * as tmp from 'tmp';
-import { resolveMetadata } from '../../metadataResolvers';
+import { resolveMetadata, getResolver } from '../../metadataResolvers';
 import { copyFileFromRef, getIgnore, purgeFolder, spawnPromise } from '../../util';
 
 interface DiffResults {
@@ -95,8 +95,15 @@ export default class Package extends SfdxCommand {
         return;
       }
 
-      // create a temp project so we can leverlage force:source:convert for destructiveChanges
-      const tmpDeletProj = !diffResults.removed.length ? null : await this.setupTmpProject(diffResults.removed, null, true);
+      // create a temp project so we can leverage force:source:convert for destructiveChanges
+      let hasDeletions = diffResults.removed.length > 0;
+      let tmpDeleteProj:string;
+      let tempDeleteProjConverted:string;
+      if (hasDeletions) {
+        tmpDeleteProj = await this.setupTmpProject(diffResults.removed, fromBranch, true);
+        tempDeleteProjConverted = await this.mkTempDir();
+        await spawnPromise('sfdx', ['force:source:convert', '-d', tempDeleteProjConverted], {shell: true, cwd: tmpDeleteProj});
+      }
 
 
       // create a temp project so we can leverage force:source:convert for primary deploy
@@ -132,9 +139,7 @@ export default class Package extends SfdxCommand {
         }
       } catch (e) {}
       await spawnPromise('sfdx', ['force:source:convert', '-d', outDir], {shell: true, cwd: tmpProject});
-      if (diffResults.removed.length) {
-        const tempDeleteProjConverted = await this.mkTempDir();
-        await spawnPromise('sfdx', ['force:source:convert', '-d', tempDeleteProjConverted], {shell: true, cwd: tmpDeletProj});
+      if (hasDeletions) {
         await fsPromise.copyFile(`${tempDeleteProjConverted}/package.xml`,`${outDir}/destructiveChanges.xml`);
       }
     } catch (e) {
@@ -158,7 +163,7 @@ export default class Package extends SfdxCommand {
     return tempDir;
   }
 
-  private async setupTmpProject(changed: string[], targetRef?: string, deletions?:boolean) {
+  private async setupTmpProject(changed: string[], targetRef: string|undefined, deletions?:boolean) {
 
     const tempDir = await this.mkTempDir();
 
@@ -203,7 +208,7 @@ export default class Package extends SfdxCommand {
     const lines = diffOutput.split(/\r?\n/);
     // tuple of additions, deletions
     const changed = [];
-    const removed = [];
+    let removed = [];
     for (const line of lines) {
       const parts  = line.split('\t');
       const status = parts[0];
@@ -236,7 +241,6 @@ export default class Package extends SfdxCommand {
         continue;
       }
 
-      // [TODO] build a "destructivechanges.xml"
       if (status === 'D') {
         removed.push(path);
       } else {
@@ -244,6 +248,25 @@ export default class Package extends SfdxCommand {
       }
 
     }
+
+    // check for directory style resources that are full deletions (and are actually changes)
+    const notFullyRemoved = [];
+    for (const path of removed) {
+      const resolver = getResolver(path);
+      if (resolver.getIsDirectory()) {
+        const metadataPaths = await resolver.getMetadataPaths(path);
+        // current implementation will return meta file regardless of whether it exists in org or not
+        if (metadataPaths.length > 1) {
+          notFullyRemoved.push(path);
+          for (const mdPath of metadataPaths) {
+            if (!changed.includes(mdPath)) {
+              changed.push(mdPath);
+            }
+          }
+        }
+      }
+    }
+    removed = removed.filter(path => !notFullyRemoved.includes(path));
     return {
       changed,
       removed
