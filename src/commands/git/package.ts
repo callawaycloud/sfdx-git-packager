@@ -42,6 +42,7 @@ export default class Package extends SfdxCommand {
     outputdir: flags.string({ char: 'd', description: messages.getMessage('outputdirDescription'), required: true }),
     ignorewhitespace: flags.boolean({ char: 'w', description: messages.getMessage('ignoreWhitespace')}),
     purge: flags.boolean({ description: messages.getMessage('purgeDescription') }),
+    nodelete: flags.boolean({ description: messages.getMessage('nodelete') }),
     force: flags.boolean({ char: 'f', description: messages.getMessage('force')})
   };
 
@@ -96,7 +97,7 @@ export default class Package extends SfdxCommand {
       }
 
       // create a temp project so we can leverage force:source:convert for destructiveChanges
-      let hasDeletions = diffResults.removed.length > 0;
+      let hasDeletions = diffResults.removed.length > 0 && !this.flags.nodelete;
       let tmpDeleteProj:string;
       let tempDeleteProjConverted:string;
       if (hasDeletions) {
