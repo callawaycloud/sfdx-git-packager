@@ -7,6 +7,12 @@ Generates a metadata package (`package.xml` & source files) for differences betw
 ![Generating vs working tree](https://user-images.githubusercontent.com/5217568/65200914-e587ed80-da45-11e9-917d-a63a3c91b29f.gif)
 *Example Generating vs "working tree" & master*
 
+## Install
+
+Run `sfdx plugins:install sfdx-git-packager`
+
+## Features
+
 **Currently supports:**
 
 - ApexClass
@@ -17,21 +23,13 @@ Generates a metadata package (`package.xml` & source files) for differences betw
 - CustomField
 - StaticResources
 - all other simple *-meta.xml files
+- Destructive Changes!
 
 **Not yet supported:**
 
 - LWC
 - ??? (please submit an issue if you run into anything else)
-- Windows :/ (help wanted)
-
-## Installation
-
-(`NPM` based install coming soon)
-
-1. git clone
-1. cd
-1. `yarn/npm` install
-1. `sfdx plugins:link`
+- Windows (needs testing)
 
 ## Usage 
 
@@ -91,6 +89,16 @@ _See code: [lib/commands/git/package.js](https://github.com/ChuckJonas/sfdx-git-
 ### Ignore Files
 
 If you wish to prevent certain files from being included in a package, you can create a `.packageIgnore` in the root of your project.  This works similar to [`.gitIgnore`](https://git-scm.com/docs/gitignore).  You can add globs to prevent source path from being picked up.
+
+## Developing
+
+(`NPM` based install coming soon)
+
+1. git clone
+1. cd
+1. `yarn/npm` install
+1. `sfdx plugins:link`
+
 
 
 ## Disclaimer
