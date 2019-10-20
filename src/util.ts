@@ -2,7 +2,6 @@ import { spawn, SpawnOptions } from 'child_process';
 import * as fs from 'fs';
 import ignore from 'ignore';
 import { join, resolve } from 'path';
-import * as rimraf from 'rimraf';
 
 const PKG_IGNORE = '.packageIgnore';
 
@@ -40,21 +39,16 @@ export async function copyFileFromRef(path: string, ref: string, destination: st
   await fs.promises.writeFile(destination, source);
 }
 
-export async function getFiles(dir: string): Promise<string[]> {
-  const dirents = await fs.promises.readdir(dir, { withFileTypes: true });
-
-  const files = [];
-  for (const dirent of dirents) {
-    const res = resolve(dir, dirent.name);
-    if (dirent.isDirectory()) {
-      files.push(await getFiles(res));
-    } else {
-      files.push(res);
-    }
-
+export async function getFilesFromRef(dir: string, ref: string): Promise<string[]> {
+  // probably a better way to check if the file exists
+  try {
+    return (await spawnPromise('git', ['ls-tree', '-r', '--name-only', `${ref}:${dir}`]))
+      .split('\n')
+      .filter(f => f)
+      .map(fPath => join(dir, fPath));
+  } catch (e) {
+    return [];
   }
-
-  return Array.prototype.concat(...files);
 }
 
 export async function purgeFolder(targetDir: string): Promise<void> {
@@ -63,19 +57,9 @@ export async function purgeFolder(targetDir: string): Promise<void> {
     const stat = await fs.promises.stat(join(targetDir, file));
     if (stat.isDirectory()) {
       await purgeFolder(resolve(targetDir, file));
+      await fs.promises.rmdir(resolve(targetDir, file));
     } else {
-      if (file.startsWith('.')) {
-        continue;
-      }
-      const fPath = join(targetDir, file);
-      await new Promise((res, rej) => {
-        rimraf(fPath, err => {
-          if (err) {
-            rej(err);
-          }
-          res();
-        });
-      });
+      await fs.promises.unlink(join(targetDir, file));
     }
   }
 }
