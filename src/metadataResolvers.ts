@@ -1,5 +1,5 @@
 import { extname } from 'path';
-import { getFiles } from './util';
+import { getFilesFromRef } from './util';
 
 // these need to be re-witten for windows... maybe use globs instead
 const AURA_REGEX = /(.*\/aura\/\w*)\/.*/;
@@ -9,7 +9,7 @@ const STATIC_RESOURCE_FILE_REGEX = /(.*\/staticresources\/\w*)\.\w*/;
 
 interface MetadataResolver {
   match: ((path: string) => boolean) | RegExp;
-  getMetadataPaths: (path: string) => Promise<string[]>;
+  getMetadataPaths: (path: string, ref: string) => Promise<string[]>;
   getIsDirectory: () => boolean;
 }
 
@@ -22,39 +22,39 @@ const metadataResolvers: MetadataResolver[] = [
     getMetadataPaths: async (path: string) => {
       return [path, path + '-meta.xml'];
     },
-    getIsDirectory: () => { return false; }
+    getIsDirectory: () => false
   },
   { // reverse of above rule
     match: COMP_META,
-    getMetadataPaths: async (path: string) => {
+    getMetadataPaths: async (path: string, ref: string) => {
       return [path, path.replace('-meta.xml', '')];
     },
-    getIsDirectory: () => { return false; }
+    getIsDirectory: () => false
   },
   { // other metadata
     match: path => {
       return path.endsWith('-meta.xml');
     },
-    getMetadataPaths: async (path: string) => {
+    getMetadataPaths: async (path: string, ref: string) => {
       return [path];
     },
-    getIsDirectory: () => { return false; }
+    getIsDirectory: () => false
   },
   { // aura bundles
     match: AURA_REGEX,
-    getMetadataPaths: async (path: string) => {
+    getMetadataPaths: async (path: string, ref: string) => {
       const appDir = AURA_REGEX.exec(path)[1];
-      return await getFiles(appDir);
+      return await getFilesFromRef(appDir, ref);
     },
-    getIsDirectory: () => { return true; }
+    getIsDirectory: () => true
   },
   { // decompressed static resource (folders)
     match: STATIC_RESOURCE_FOLDER_REGEX,
-    getMetadataPaths: async (path: string) => {
+    getMetadataPaths: async (path: string, ref: string) => {
       const appDir = STATIC_RESOURCE_FOLDER_REGEX.exec(path)[1];
-      return [...await getFiles(appDir), `${appDir}.resource-meta.xml`];
+      return [...await getFilesFromRef(appDir, ref), `${appDir}.resource-meta.xml`];
     },
-    getIsDirectory: () => { return true; }
+    getIsDirectory: () => true
   },
   { // static resource (single files)
     match: STATIC_RESOURCE_FILE_REGEX,
@@ -62,7 +62,7 @@ const metadataResolvers: MetadataResolver[] = [
       const baseName = STATIC_RESOURCE_FILE_REGEX.exec(path)[1];
       return [path, `${baseName}.resource-meta.xml` ];
     },
-    getIsDirectory: () => { return false; }
+    getIsDirectory: () => false
   }
 ];
 
@@ -77,7 +77,7 @@ export function getResolver(path: string) {
 }
 
 // given a path, return all other paths that must be included along side for a valid deployment
-export function resolveMetadata(path: string) {
+export function resolveMetadata(path: string, ref: string) {
   const resolver = getResolver(path);
-  return resolver && resolver.getMetadataPaths(path);
+  return resolver && resolver.getMetadataPaths(path, ref);
 }
