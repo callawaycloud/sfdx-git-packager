@@ -3,6 +3,7 @@ import { getFilesFromRef } from './util';
 
 // these need to be re-witten for windows... maybe use globs instead
 const AURA_REGEX = /(.*\/aura\/\w*)\/.*/;
+const LWC_REGEX = /(.*\/lwc\/\w*)\/.*/;
 const COMP_META = /.*(.cls|\.trigger|\.page|\.component)-meta.xml/;
 const STATIC_RESOURCE_FOLDER_REGEX = /(.*\/staticresources\/\w*)\/.*/;
 const STATIC_RESOURCE_FILE_REGEX = /(.*\/staticresources\/\w*)\.\w*/;
@@ -44,6 +45,14 @@ const metadataResolvers: MetadataResolver[] = [
     match: AURA_REGEX,
     getMetadataPaths: async (path: string, ref: string) => {
       const appDir = AURA_REGEX.exec(path)[1];
+      return await getFilesFromRef(appDir, ref);
+    },
+    getIsDirectory: () => true
+  },
+  { // lwc bundles
+    match: LWC_REGEX,
+    getMetadataPaths: async (path: string, ref: string) => {
+      const appDir = LWC_REGEX.exec(path)[1];
       return await getFilesFromRef(appDir, ref);
     },
     getIsDirectory: () => true

@@ -11,6 +11,7 @@ Generates a metadata package (`package.xml` & source files) for differences betw
 - ApexTrigger
 - VisualForce
 - Aura
+- LWC
 - CustomObject
 - CustomField
 - StaticResources
@@ -18,7 +19,6 @@ Generates a metadata package (`package.xml` & source files) for differences betw
 
 **Not yet supported:**
 
-- LWC
 - ??? (please submit an issue if you run into anything else)
 - Windows :/ (help wanted)
 
@@ -83,7 +83,7 @@ EXAMPLES
   $ sfdx git:package -s head -d deployments/my-working-copy
 ```
 
-_See code: [lib/commands/git/package.js](https://github.com/ChuckJonas/sfdx-git-diff-to-pkg/blob/v0.0.2/lib/commands/git/package.js)_
+_See code: [lib/commands/git/package.js](https://github.com/ChuckJonas/sfdx-git-diff-to-pkg/blob/v0.0.3/lib/commands/git/package.js)_
 <!-- commandsstop -->
 
 ### Ignore Files
