@@ -2,7 +2,7 @@
 
 ![npm](https://img.shields.io/npm/v/sfdx-git-packager)
 
-Generates a metadata package (`package.xml` & source files) for differences between two branches/commits.  
+Generates a metadata package (`package.xml` & source files) for differences between two branches/commits.
 
 ![Generating vs working tree](https://user-images.githubusercontent.com/5217568/65200914-e587ed80-da45-11e9-917d-a63a3c91b29f.gif)
 *Example Generating vs "working tree" & master*
@@ -31,7 +31,7 @@ Run `sfdx plugins:install sfdx-git-packager`
 - ??? (please submit an issue if you run into anything else)
 - Windows (needs testing)
 
-## Usage 
+## Usage
 
 Must be run from inside an sfdx project with an initialized git repo.
 
@@ -44,7 +44,7 @@ Generates a Metadata Package using the differences between two git refs (branch 
 
 ```
 USAGE
-  $ sfdx git:package -d <string> [-s <string>] [-t <string>] [-w] [--purge] [--nodelete] [-f] [--json] [--loglevel 
+  $ sfdx git:package -d <string> [-s <string>] [-t <string>] [-w] [--purge] [--nodelete] [-f] [--json] [--loglevel
   trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
 OPTIONS
@@ -99,7 +99,9 @@ If you wish to prevent certain files from being included in a package, you can c
 1. `yarn/npm` install
 1. `sfdx plugins:link`
 
+### Testing
 
+The test projects have their own git repos. In order to avoid conflicts with the parent repo folders in /test/projects/*/ we change the .git folder to .notgit so we can commit those to the repo. You'll need to switch the file names back in order to run a test and if you want to make changes to the reference repo.
 
 ## Disclaimer
 
