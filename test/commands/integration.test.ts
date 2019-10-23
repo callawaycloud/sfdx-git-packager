@@ -31,16 +31,16 @@ function cleanUp(projectPath: string) {
     rimraf('deploy', (err) => {});
   }
 }
-const proj_path = "test/projects/basic_change";
+const testProjPath = "test/projects/test_project";
 describe('git:package', () => {
   before(() => {
-    prep(proj_path);
+    prep(testProjPath);
   });
   it('it builds a deployment with changed files', async () => {
     try {
       const res = await myExec('sfdx git:package -d deploy --purge');
       assert.equal(null, res.err);
-      const compareRes = compareSync("deploy", "expected", { compareContent: true });
+      const compareRes = compareSync("deploy", "../../output/basic_change", { compareContent: true });
       assert.strictEqual(compareRes.distinct, 0);
       assert.strictEqual(compareRes.equal, 4);
     } catch (e) {
@@ -48,6 +48,6 @@ describe('git:package', () => {
     }
   });
   after(() => {
-    cleanUp(proj_path);
+    cleanUp(testProjPath);
   });
 });
