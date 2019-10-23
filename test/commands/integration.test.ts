@@ -31,21 +31,25 @@ function cleanUp(projectPath: string) {
     rimraf('deploy', (err) => {});
   }
 }
+async function runTest(targetRef: string, sourceRef: string, expectedOutputDir: string) {
+  console.log(targetRef, sourceRef, expectedOutputDir);
+  try {
+    const res = await myExec(`sfdx git:package -d deploy --purge -s ${sourceRef} -t ${targetRef}`);
+    assert.equal(null, res.err);
+    const compareRes = compareSync("deploy", `../../output/${expectedOutputDir}`, { compareContent: true });
+    assert.strictEqual(compareRes.distinct, 0);
+    assert.strictEqual(compareRes.equal, 4);
+  } catch (e) {
+    assert.fail(e);
+  }
+}
 const testProjPath = "test/projects/test_project";
 describe('git:package', () => {
   before(() => {
     prep(testProjPath);
   });
   it('it builds a deployment with changed files', async () => {
-    try {
-      const res = await myExec('sfdx git:package -d deploy --purge');
-      assert.equal(null, res.err);
-      const compareRes = compareSync("deploy", "../../output/basic_change", { compareContent: true });
-      assert.strictEqual(compareRes.distinct, 0);
-      assert.strictEqual(compareRes.equal, 4);
-    } catch (e) {
-      assert.fail(e);
-    }
+    await runTest('one_class', 'update_class', 'basic_change');
   });
   after(() => {
     cleanUp(testProjPath);
