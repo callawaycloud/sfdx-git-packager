@@ -17,9 +17,8 @@ function prep(projectPath: string) {
     console.error(`${projectPath} project path not found for prep, tests results not valid`)
   } else {
     process.chdir(projectPath);
-    if (fs.existsSync('.notgit')) {
-      fs.renameSync('.notgit','.git');
-    }
+    process.env.GIT_DIR = ".notgit"
+    process.env.GIT_WORK_TREE = "."
     if (fs.existsSync('deploy')) {
       rimraf('deploy', (err) => {});
     }
@@ -27,9 +26,6 @@ function prep(projectPath: string) {
 }
 
 function cleanUp(projectPath: string) {
-  if (fs.existsSync('.git')) {
-    fs.renameSync('.git','.notgit');
-  }
   if (fs.existsSync('deploy')) {
     rimraf('deploy', (err) => {});
   }
