@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import { exec, ExecException } from 'child_process';
 import * as assert from 'assert';
 import * as rimraf from 'rimraf';
+import { compareSync } from 'dir-compare';
 
 async function myExec(cmd:string):Promise<{err: ExecException | null, stdout: string, stderr: string}> {
   return new Promise((resolve, reject) => {
@@ -39,7 +40,9 @@ describe('git:package', () => {
     try {
       const res = await myExec('sfdx git:package -d deploy --purge');
       assert.equal(null, res.err);
-      assert.ok(fs.existsSync("deploy/package.xml"));
+      const compareRes = compareSync("deploy", "expected", { compareContent: true });
+      assert.strictEqual(compareRes.distinct, 0);
+      assert.strictEqual(compareRes.equal, 4);
     } catch (e) {
       assert.fail(e);
     }
