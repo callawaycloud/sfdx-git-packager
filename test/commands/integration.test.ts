@@ -54,6 +54,9 @@ describe('git:package', () => {
   it('it builds a deployment with changed files', async () => {
     await runTest('update_class');
   });
+  it('detects changes to a meta file', async () => {
+    await runTest('update_meta_file');
+  });
   after(() => {
     cleanUp(testProjPath);
   });
