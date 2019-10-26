@@ -1,36 +1,18 @@
-import * as fs from 'fs';
+// import * as fs from 'fs';
 import { exec, ExecException } from 'child_process';
 import * as assert from 'assert';
-import * as rimraf from 'rimraf';
 import { compareSync } from 'dir-compare';
 
+const testProjPath = "test/integration/project";
 async function myExec(cmd:string):Promise<{err: ExecException | null, stdout: string, stderr: string}> {
   return new Promise((resolve, reject) => {
     setTimeout(() => reject(), 10000);
-    exec(cmd, (err, stdout, stderr) => {
+    exec(cmd, { cwd: testProjPath }, (err, stdout, stderr) => {
       resolve({err, stdout, stderr});
     });
   });
 }
 
-function prep(projectPath: string) {
-  if (!fs.existsSync(projectPath)) {
-    console.error(`${projectPath} project path not found for prep, tests results not valid`)
-  } else {
-    process.chdir(projectPath);
-    process.env.GIT_DIR = ".notgit"
-    process.env.GIT_WORK_TREE = "."
-    if (fs.existsSync('deploy')) {
-      rimraf('deploy', (err) => {});
-    }
-  }
-}
-
-function cleanUp(projectPath: string) {
-  if (fs.existsSync('deploy')) {
-    rimraf('deploy', (err) => {});
-  }
-}
 async function runTest(testName: string) {
   const sourceRef = testName;
   const targetRef = `${testName}^`;
@@ -38,17 +20,18 @@ async function runTest(testName: string) {
   try {
     const res = await myExec(`sfdx git:package -d deploy --purge -s ${sourceRef} -t ${targetRef}`);
     assert.equal(null, res.err);
-    const compareRes = compareSync("deploy", `../output/${expectedOutputDir}`, { compareContent: true });
+    const compareRes = compareSync("test/integration/project/deploy", `test/integration/output/${expectedOutputDir}`, { compareContent: true });
     assert.strictEqual(compareRes.distinct, 0);
     assert.strictEqual(true, compareRes.equal > 0);
   } catch (e) {
     assert.fail(e);
   }
 }
-const testProjPath = "test/integration/project";
+
 describe('git:package', () => {
   before(() => {
-    prep(testProjPath);
+    process.env.GIT_DIR = ".notgit"
+    process.env.GIT_WORK_TREE = "."
   });
   it('detects an update to an apex class', async () => {
     await runTest('update_class');
@@ -61,8 +44,5 @@ describe('git:package', () => {
   });
   it('detects changes to a object', async () => {
     await runTest('mod_object');
-  });
-  after(() => {
-    cleanUp(testProjPath);
   });
 });
