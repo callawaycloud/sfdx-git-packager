@@ -40,7 +40,7 @@ async function runTest(testName: string) {
     assert.equal(null, res.err);
     const compareRes = compareSync("deploy", `../output/${expectedOutputDir}`, { compareContent: true });
     assert.strictEqual(compareRes.distinct, 0);
-    assert.strictEqual(compareRes.equal, 4);
+    assert.strictEqual(true, compareRes.equal > 0);
   } catch (e) {
     assert.fail(e);
   }
@@ -55,6 +55,12 @@ describe('git:package', () => {
   });
   it('detects changes to a meta file', async () => {
     await runTest('update_meta_file');
+  });
+  it('detects a new object', async () => {
+    await runTest('add_object');
+  });
+  it('detects changes to a object', async () => {
+    await runTest('mod_object');
   });
   after(() => {
     cleanUp(testProjPath);
