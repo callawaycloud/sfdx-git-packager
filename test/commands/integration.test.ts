@@ -39,14 +39,14 @@ async function runTest(testName: string) {
   try {
     const res = await myExec(`sfdx git:package -d deploy --purge -s ${sourceRef} -t ${targetRef}`);
     assert.equal(null, res.err);
-    const compareRes = compareSync("deploy", `../../output/${expectedOutputDir}`, { compareContent: true });
+    const compareRes = compareSync("deploy", `../output/${expectedOutputDir}`, { compareContent: true });
     assert.strictEqual(compareRes.distinct, 0);
     assert.strictEqual(compareRes.equal, 4);
   } catch (e) {
     assert.fail(e);
   }
 }
-const testProjPath = "test/projects/test_project";
+const testProjPath = "test/project";
 describe('git:package', () => {
   before(() => {
     prep(testProjPath);
