@@ -99,9 +99,25 @@ If you wish to prevent certain files from being included in a package, you can c
 1. `yarn/npm` install
 1. `sfdx plugins:link`
 
-### Testing
+### Testings
 
-The test projects have their own git repos. In order to avoid conflicts with the parent repo folders in /test/projects/*/ we change the .git folder to .notgit so we can commit those to the repo. You'll need to switch the file names back in order to run a test and if you want to make changes to the reference repo.
+`npm test` just runs the basic test suite, not much here yet
+
+#### Integration Testing
+
+`npm run integrationTest` runs integration test suite
+
+#### Setting Up Integration Tests
+
+We've got a git repo in `test/integration/project` that represents a project. In order to avoid conflicts with the parent repo folders we change the .git folder to .notgit so we can commit those to the repo. You'll need to "unpack" that repo if you want to easily work in the test git repo when expanding the integration suite.
+
+To add tests
+1. unpack the test repo `npm run tgu`
+2. go to the test project `cd test/integration/project`
+3. create a branch, make the mods you want to test, and commit
+4. generate the expected output `npm run gen`
+5. check the contents of `test/integration/output` matches what you'd expect for your change
+6. pack the test repo back up `npm run tgp`
 
 ## Disclaimer
 
