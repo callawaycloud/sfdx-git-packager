@@ -35,7 +35,6 @@ async function runTest(testName: string) {
   const sourceRef = testName;
   const targetRef = `${testName}^`;
   const expectedOutputDir = testName;
-  console.log(targetRef, sourceRef, expectedOutputDir);
   try {
     const res = await myExec(`sfdx git:package -d deploy --purge -s ${sourceRef} -t ${targetRef}`);
     assert.equal(null, res.err);
@@ -51,7 +50,7 @@ describe('git:package', () => {
   before(() => {
     prep(testProjPath);
   });
-  it('it builds a deployment with changed files', async () => {
+  it('detects an update to an apex class', async () => {
     await runTest('update_class');
   });
   it('detects changes to a meta file', async () => {
