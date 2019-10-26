@@ -45,7 +45,7 @@ async function runTest(testName: string) {
     assert.fail(e);
   }
 }
-const testProjPath = "test/project";
+const testProjPath = "test/integration/project";
 describe('git:package', () => {
   before(() => {
     prep(testProjPath);

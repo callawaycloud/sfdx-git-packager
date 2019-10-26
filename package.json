@@ -71,8 +71,8 @@
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
     "test": "nyc --extension .ts mocha --timeout 99999 --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif-dev readme && git add README.md",
-    "tgp": "mv test/project/.git test/project/.notgit",
-    "tgu": "mv test/project/.notgit test/project/.git",
-    "gen": "ts-node test/util/genIntegrationTestOutput.ts"
+    "tgp": "mv test/integration/project/.git test/integration/project/.notgit",
+    "tgu": "mv test/integration/project/.notgit test/integration/project/.git",
+    "gen": "ts-node test/integration/genIntegrationTestOutput.ts"
   }
 }

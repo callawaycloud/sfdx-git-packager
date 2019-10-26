@@ -10,7 +10,7 @@ async function myExec(cmd:string):Promise<{err: ExecException | null, stdout: st
 }
 
 (async () => {
-    process.chdir("test/project");
+    process.chdir("test/integration/project");
     process.env.GIT_DIR = ".git";
     process.env.GIT_WORK_TREE = ".";
     const res = await myExec("git branch --list");
