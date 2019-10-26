@@ -31,7 +31,10 @@ function cleanUp(projectPath: string) {
     rimraf('deploy', (err) => {});
   }
 }
-async function runTest(targetRef: string, sourceRef: string, expectedOutputDir: string) {
+async function runTest(testName: string) {
+  const sourceRef = testName;
+  const targetRef = `${testName}^`;
+  const expectedOutputDir = testName;
   console.log(targetRef, sourceRef, expectedOutputDir);
   try {
     const res = await myExec(`sfdx git:package -d deploy --purge -s ${sourceRef} -t ${targetRef}`);
@@ -49,7 +52,7 @@ describe('git:package', () => {
     prep(testProjPath);
   });
   it('it builds a deployment with changed files', async () => {
-    await runTest('one_class', 'update_class', 'basic_change');
+    await runTest('update_class');
   });
   after(() => {
     cleanUp(testProjPath);
