@@ -188,7 +188,6 @@ export default class Package extends SfdxCommand {
       }
 
       for (let mdPath of metadataPaths) {
-
         if (isAbsolute(mdPath)) {
           mdPath = relative(this.projectPath, mdPath);
         }
@@ -258,7 +257,9 @@ export default class Package extends SfdxCommand {
     const notFullyRemoved = [];
     for (const path of removed) {
       const resolver = getResolver(path);
-
+      if (!resolver) {
+        continue;
+      }
       if (resolver.getIsDirectory()) {
         const metadataPaths = await resolver.getMetadataPaths(path, targetRef);
         // current implementation will return meta file regardless of whether it exists in org or not
