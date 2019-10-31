@@ -1,7 +1,8 @@
 language: node_js
 node_js:
-  - 10
+  - 12
 install:
   - npm install
+  - npm install --global sfdx-cli
 script:
   - npm run integrationTest
