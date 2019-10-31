@@ -177,7 +177,7 @@ export default class Package extends SfdxCommand {
       await fs.mkdirp(join(tempDir, sourcePath));
     }
 
-    await fsPromise.copyFile(join(this.projectPath, 'sfdx-project.json'), join(tempDir, 'sfdx-project.json'));
+    await copyFileFromRef('sfdx-project.json', targetRef, join(tempDir, 'sfdx-project.json'));
 
     for (const path of changed) {
       const metadataPaths = await resolveMetadata(path, targetRef);
