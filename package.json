@@ -1,7 +1,7 @@
 {
   "name": "sfdx-git-packager",
   "description": "Generates a package.xml for difference between two branches",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Charlie Jonas @ChuckJonas",
   "bugs": "https://github.com/ChuckJonas/sfdx-git-diff-to-pkg/issues",
   "dependencies": {
