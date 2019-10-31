@@ -1,6 +1,6 @@
 # sfdx-git-packager
 
-![npm](https://img.shields.io/npm/v/sfdx-git-packager)
+![npm](https://img.shields.io/npm/v/sfdx-git-packager) [![Build Status](https://travis-ci.org/ChuckJonas/sfdx-git-packager.svg?branch=master)](https://travis-ci.org/ChuckJonas/sfdx-git-packager)
 
 Generates a metadata package (`package.xml` & source files) for differences between two branches/commits.
 
