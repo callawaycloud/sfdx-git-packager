@@ -23,16 +23,59 @@ describe('git:package integration test', async () => {
   before(() => {
     setGitENV();
   });
-  it('detects an update to an apex class', async () => {
-    await runTest('update_class');
+
+  describe('apex classes', async() => {
+    it('detects a new apex class', async () => {
+      await runTest('add_class');
+    });
+    it('detects an update to an apex class', async () => {
+      await runTest('mod_class');
+    });
+    it('detects an update to an apex class meta file', async () => {
+      await runTest('mod_class_meta');
+    });
+    it('detects deletion of an apex class', async () => {
+      await runTest('del_class');
+    });
   });
-  it('detects changes to a meta file', async () => {
-    await runTest('update_meta_file');
+
+  describe('custom fields', async() => {
+    it('detects a new custom field', async () => {
+      await runTest('add_field');
+    });
+    it('detects an update to an custom field', async () => {
+      await runTest('mod_field');
+    });
+    it('detects deletion of an custom field', async () => {
+      await runTest('del_field');
+    });
   });
-  it('detects a new object', async () => {
-    await runTest('add_object');
+
+  describe('custom objects', async() => {
+    it('detects a new custom object', async () => {
+      await runTest('add_object');
+    });
+    it('detects an update to an custom object', async () => {
+      await runTest('mod_object');
+    });
+    it('detects deletion of an custom object', async () => {
+      await runTest('del_object');
+    });
   });
-  it('detects changes to a object', async () => {
-    await runTest('mod_object');
+
+  describe('static resources', async() => {
+    it('detects a new static resource', async () => {
+      await runTest('add_static_resource');
+    });
+    it('detects an update to a static resource', async () => {
+      await runTest('mod_static_resource');
+    });
+    it('detects partial deletion of a static resource', async () => {
+      await runTest('mod_partially_delete_static_resource');
+    });
+    it('detects full deletion of a static resource', async () => {
+      await runTest('del_static_resource');
+    });
   });
+
 });
