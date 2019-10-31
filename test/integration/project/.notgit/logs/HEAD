@@ -36,3 +36,8 @@ a0a46a9f8fd191238537bd26d28b7a035f90b77f 8d411d5e0074d561e39cc35aec38f7e755e6960
 8d411d5e0074d561e39cc35aec38f7e755e69604 35a9ec2d9c608f949a4b7acb27f48102d55cc4c4 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499907 -0600	commit: added a static resource
 35a9ec2d9c608f949a4b7acb27f48102d55cc4c4 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572500837 -0600	checkout: moving from add_static_resource to del_single_file_from_folder
 8d411d5e0074d561e39cc35aec38f7e755e69604 30d3d6de84f92e87588340070a04fa5b37050a63 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572500870 -0600	commit: removed LWC file
+30d3d6de84f92e87588340070a04fa5b37050a63 30d3d6de84f92e87588340070a04fa5b37050a63 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572503217 -0600	reset: moving to HEAD
+30d3d6de84f92e87588340070a04fa5b37050a63 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572503254 -0600	checkout: moving from del_single_file_from_folder to master
+8d411d5e0074d561e39cc35aec38f7e755e69604 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572503254 -0600	reset: moving to HEAD
+8d411d5e0074d561e39cc35aec38f7e755e69604 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572503272 -0600	checkout: moving from master to master
+8d411d5e0074d561e39cc35aec38f7e755e69604 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572503272 -0600	reset: moving to HEAD

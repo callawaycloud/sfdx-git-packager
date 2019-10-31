@@ -20,8 +20,10 @@ async function runTest(testName: string) {
 }
 
 describe('git:package integration test', async () => {
-  before(() => {
+  before(async () => {
     setGitENV();
+    await myExec('git checkout master', projectPath);
+    await myExec('git reset --hard', projectPath);
   });
 
   describe('apex classes', async () => {
