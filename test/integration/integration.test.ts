@@ -1,13 +1,15 @@
 import * as assert from 'assert';
 import { compareSync } from 'dir-compare';
+import { resolve } from 'path';
 import { myExec, projectPath, setGitENV } from './util';
 
 async function runTest(testName: string) {
   const sourceRef = testName;
   const expectedOutputDir = testName;
   try {
+    const program = resolve(__dirname, '..', '..', 'bin', 'run');
     const res = await myExec(
-      `sfdx git:package -d deploy --purge -s ${sourceRef} -t master`,
+      `${program} git:package -d deploy --purge -s ${sourceRef} -t master`,
       projectPath);
     assert.equal(null, res.err);
     const compareRes = compareSync('test/integration/project/deploy', `test/integration/output/${expectedOutputDir}`, { compareContent: true });
