@@ -11,7 +11,8 @@ async function runTest(testName: string) {
     const res = await myExec(
       `${program} git:package -d deploy --purge -s ${sourceRef} -t master`,
       projectPath);
-    assert.equal(null, res.err);
+
+    assert.equal(null, res.err, res.err.message);
     const compareRes = compareSync('test/integration/project/deploy', `test/integration/output/${expectedOutputDir}`, { compareContent: true });
     const mismatched = compareRes.diffSet.filter(diff => diff.state !== 'equal').map(diff => diff.name1 || diff.name2);
     assert.strictEqual(mismatched.length, 0, `The following files were different: \n${mismatched.join('\n')}`);
