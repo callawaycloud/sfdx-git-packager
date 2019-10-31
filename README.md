@@ -83,7 +83,7 @@ EXAMPLES
   $ sfdx git:package -s head -d deployments/my-working-copy
 ```
 
-_See code: [lib/commands/git/package.js](https://github.com/ChuckJonas/sfdx-git-diff-to-pkg/blob/v0.0.3/lib/commands/git/package.js)_
+_See code: [lib/commands/git/package.js](https://github.com/ChuckJonas/sfdx-git-diff-to-pkg/blob/v0.0.4/lib/commands/git/package.js)_
 <!-- commandsstop -->
 
 ### Ignore Files
