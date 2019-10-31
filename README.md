@@ -116,11 +116,12 @@ We've got a git repo in `test/integration/project` that represents a project. In
 To add tests
 
 1. unpack the test repo `npm run tgu`
-2. go to the test project `cd test/integration/project`
-3. create a branch off of `master`, make the mods you want to test, and commit
-4. generate the expected output `npm run gen`
-5. check the contents of `test/integration/output` matches what you'd expect for your change (make sure to check there are no other unexpected changes!)
-6. pack the test repo back up `npm run tgp`
+1. go to the test project `cd test/integration/project`
+1. run `git reset --hard` to bring everything back
+1. create a branch off of `master`, make the mods you want to test, and commit
+1. generate the expected output `npm run gen`
+1. check the contents of `test/integration/output` matches what you'd expect for your change (make sure to check there are no other unexpected changes!)
+1. pack the test repo back up `npm run tgp`
 
 ## Disclaimer
 

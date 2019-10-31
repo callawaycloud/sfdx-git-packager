@@ -1,7 +1,7 @@
 import { extname } from 'path';
 import { getFilesFromRef } from './util';
 
-// these need to be re-witten for windows... maybe use globs instead
+// these need to be re-written for windows... maybe use globs instead
 const AURA_REGEX = /(.*\/aura\/\w*)\/.*/;
 const LWC_REGEX = /(.*\/lwc\/\w*)\/.*/;
 const COMP_META = /.*(.cls|\.trigger|\.page|\.component)-meta.xml/;
@@ -69,7 +69,7 @@ const metadataResolvers: MetadataResolver[] = [
     match: STATIC_RESOURCE_FILE_REGEX,
     getMetadataPaths: async (path: string) => {
       const baseName = STATIC_RESOURCE_FILE_REGEX.exec(path)[1];
-      return [path, `${baseName}.resource-meta.xml` ];
+      return [path, `${baseName}.resource-meta.xml`];
     },
     getIsDirectory: () => false
   }
