@@ -36,8 +36,7 @@ Run `sfdx plugins:install sfdx-git-packager`
 Must be run from inside an sfdx project with an initialized git repo.
 
 <!-- commands -->
-
-- [`sfdx git:package -d <string> [-s <string>] [-t <string>] [-w] [--purge] [--nodelete] [-f] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-gitpackage--d-string--s-string--t-string--w---purge---nodelete--f---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+* [`sfdx git:package -d <string> [-s <string>] [-t <string>] [-w] [--purge] [--nodelete] [-f] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-gitpackage--d-string--s-string--t-string--w---purge---nodelete--f---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
 
 ## `sfdx git:package -d <string> [-s <string>] [-t <string>] [-w] [--purge] [--nodelete] [-f] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -45,7 +44,7 @@ Generates a Metadata Package using the differences between two git refs (branch 
 
 ```
 USAGE
-  $ sfdx git:package -d <string> [-s <string>] [-t <string>] [-w] [--purge] [--nodelete] [-f] [--json] [--loglevel
+  $ sfdx git:package -d <string> [-s <string>] [-t <string>] [-w] [--purge] [--nodelete] [-f] [--json] [--loglevel 
   trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
 OPTIONS
@@ -84,8 +83,7 @@ EXAMPLES
   $ sfdx git:package -s head -d deployments/my-working-copy
 ```
 
-_See code: [lib/commands/git/package.js](https://github.com/ChuckJonas/sfdx-git-diff-to-pkg/blob/v0.0.3/lib/commands/git/package.js)_
-
+_See code: [lib/commands/git/package.js](https://github.com/ChuckJonas/sfdx-git-diff-to-pkg/blob/v0.0.5/lib/commands/git/package.js)_
 <!-- commandsstop -->
 
 ### Ignore Files
