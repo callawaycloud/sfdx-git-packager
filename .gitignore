@@ -6,3 +6,6 @@
 /package-lock.json
 /tmp
 node_modules
+test/integration/project/*
+!test/integration/project/.notgit
+test/integration/project/.notgit/logs/HEAD

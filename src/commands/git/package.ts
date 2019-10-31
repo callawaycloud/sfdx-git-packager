@@ -62,7 +62,7 @@ export default class Package extends SfdxCommand {
   public async run(): Promise<AnyJson> {
     this.projectPath = this.project.getPath();
 
-    this.sourcePaths = ((await this.project.resolveProjectConfig())['packageDirectories'] as any[]).map(d => d.path);
+    this.sourcePaths = ((await this.project.resolveProjectConfig())['packageDirectories'] as Array<{ path: string }>).map(d => d.path);
 
     const toBranch = this.flags.targetref;
     const fromBranch = this.flags.sourceref;
@@ -177,7 +177,7 @@ export default class Package extends SfdxCommand {
       await fs.mkdirp(join(tempDir, sourcePath));
     }
 
-    await fsPromise.copyFile(join(this.projectPath, 'sfdx-project.json'), join(tempDir, 'sfdx-project.json'));
+    await copyFileFromRef('sfdx-project.json', targetRef, join(tempDir, 'sfdx-project.json'));
 
     for (const path of changed) {
       const metadataPaths = await resolveMetadata(path, targetRef);
