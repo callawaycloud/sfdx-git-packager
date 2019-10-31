@@ -3,5 +3,6 @@ node_js:
   - 12
 install:
   - npm install
+  - npm install --global sfdx-cli
 script:
   - npm run integrationTest
