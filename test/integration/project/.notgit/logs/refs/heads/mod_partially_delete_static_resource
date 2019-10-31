@@ -1,2 +1,2 @@
-0000000000000000000000000000000000000000 07f725e341148444118c6aefb6cc18d22f0bb0f7 Ralph Callaway <ralph@callawaycloudconsulting.com> 1572480081 -0600	branch: Created from mod_static_resource
-07f725e341148444118c6aefb6cc18d22f0bb0f7 abbe9147d4a7deca71d16ac37c0e50351b711840 Ralph Callaway <ralph@callawaycloudconsulting.com> 1572480105 -0600	commit: delete part of a static resource
+0000000000000000000000000000000000000000 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499421 -0600	branch: Created from HEAD
+8d411d5e0074d561e39cc35aec38f7e755e69604 0aac988ce70a244636e3e41069044cbed95aca04 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499442 -0600	commit: deleted one file from static resource (folder)

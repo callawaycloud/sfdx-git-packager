@@ -1,3 +1,2 @@
-0000000000000000000000000000000000000000 098afb04b5321cdbcc92988e00ea3afeb1ed1f7b Ralph Callaway <ralph@callawaycloudconsulting.com> 1572479287 -0600	branch: Created from add_class
-098afb04b5321cdbcc92988e00ea3afeb1ed1f7b ec53e8fce7192445628b9cf56bd5128ce7dd91e4 Ralph Callaway <ralph@callawaycloudconsulting.com> 1572479297 -0600	revert: Revert "add class"
-ec53e8fce7192445628b9cf56bd5128ce7dd91e4 37413b03aa4185af1d40ee4456dba4796144e2ce Ralph Callaway <ralph@callawaycloudconsulting.com> 1572479315 -0600	commit (amend): delete class
+0000000000000000000000000000000000000000 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499472 -0600	branch: Created from HEAD
+8d411d5e0074d561e39cc35aec38f7e755e69604 3e9ae7f54c4954c400dbf2b3b59c8d6b6b95b552 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499484 -0600	commit: deleted a class

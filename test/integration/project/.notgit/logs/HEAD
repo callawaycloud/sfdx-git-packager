@@ -1,37 +1,38 @@
-0000000000000000000000000000000000000000 7d4a6b3d608fc4aaf296a4af40e15a9922065567 Ralph Callaway <ralph@callawaycloudconsulting.com> 1571698712 -0600	commit (initial): just an apex class
-7d4a6b3d608fc4aaf296a4af40e15a9922065567 7d4a6b3d608fc4aaf296a4af40e15a9922065567 Ralph Callaway <ralph@callawaycloudconsulting.com> 1571698790 -0600	checkout: moving from master to new_feature
-7d4a6b3d608fc4aaf296a4af40e15a9922065567 6662fd6280ae07efa972d14254ccaaa4d1a8738e Ralph Callaway <ralph@callawaycloudconsulting.com> 1571698834 -0600	commit: update one class
-6662fd6280ae07efa972d14254ccaaa4d1a8738e 7d4a6b3d608fc4aaf296a4af40e15a9922065567 Ralph Callaway <ralph@callawaycloudconsulting.com> 1571854834 -0600	checkout: moving from new_feature to one_class
-7d4a6b3d608fc4aaf296a4af40e15a9922065567 6662fd6280ae07efa972d14254ccaaa4d1a8738e Ralph Callaway <ralph@callawaycloudconsulting.com> 1571855179 -0600	checkout: moving from one_class to update_class
-6662fd6280ae07efa972d14254ccaaa4d1a8738e 6662fd6280ae07efa972d14254ccaaa4d1a8738e Ralph Callaway <ralph@callawaycloudconsulting.com> 1572071062 -0600	checkout: moving from update_class to update_meta_file
-6662fd6280ae07efa972d14254ccaaa4d1a8738e 25e87a394bbbb9b23a9014e7da8f7031db1dc2d3 Ralph Callaway <ralph@callawaycloudconsulting.com> 1572071078 -0600	commit: update meta file
-25e87a394bbbb9b23a9014e7da8f7031db1dc2d3 25e87a394bbbb9b23a9014e7da8f7031db1dc2d3 Ralph Callaway <ralph@callawaycloudconsulting.com> 1572071372 -0600	checkout: moving from update_meta_file to add_object
-25e87a394bbbb9b23a9014e7da8f7031db1dc2d3 7fb2db87789917535ac88f778764269fc68c9836 Ralph Callaway <ralph@callawaycloudconsulting.com> 1572071381 -0600	commit: add object
-7fb2db87789917535ac88f778764269fc68c9836 7fb2db87789917535ac88f778764269fc68c9836 Ralph Callaway <ralph@callawaycloudconsulting.com> 1572071411 -0600	checkout: moving from add_object to mod_object
-7fb2db87789917535ac88f778764269fc68c9836 b62f4beed01567c0b29eb17e55bb11e1150e52e2 Ralph Callaway <ralph@callawaycloudconsulting.com> 1572071420 -0600	commit: mod object
-b62f4beed01567c0b29eb17e55bb11e1150e52e2 a38412de7410cd81f6c42f3fe937b540e1aaeb6e Ralph Callaway <ralph@callawaycloudconsulting.com> 1572478914 -0600	commit: ignore artifacts
-a38412de7410cd81f6c42f3fe937b540e1aaeb6e a38412de7410cd81f6c42f3fe937b540e1aaeb6e Ralph Callaway <ralph@callawaycloudconsulting.com> 1572479025 -0600	checkout: moving from mod_object to add_class
-a38412de7410cd81f6c42f3fe937b540e1aaeb6e a38412de7410cd81f6c42f3fe937b540e1aaeb6e Ralph Callaway <ralph@callawaycloudconsulting.com> 1572479043 -0600	checkout: moving from add_class to mod_object
-a38412de7410cd81f6c42f3fe937b540e1aaeb6e b62f4beed01567c0b29eb17e55bb11e1150e52e2 Ralph Callaway <ralph@callawaycloudconsulting.com> 1572479052 -0600	reset: moving to b62f4beed01567c0b29eb17e55bb11e1150e52e2
-b62f4beed01567c0b29eb17e55bb11e1150e52e2 a38412de7410cd81f6c42f3fe937b540e1aaeb6e Ralph Callaway <ralph@callawaycloudconsulting.com> 1572479056 -0600	checkout: moving from mod_object to add_class
-a38412de7410cd81f6c42f3fe937b540e1aaeb6e d30f2dd7ebd8adf02e65eab61ce9c063c11069ae Ralph Callaway <ralph@callawaycloudconsulting.com> 1572479265 -0600	commit: prevent auto deploy from running
-d30f2dd7ebd8adf02e65eab61ce9c063c11069ae 098afb04b5321cdbcc92988e00ea3afeb1ed1f7b Ralph Callaway <ralph@callawaycloudconsulting.com> 1572479273 -0600	commit: add class
-098afb04b5321cdbcc92988e00ea3afeb1ed1f7b 098afb04b5321cdbcc92988e00ea3afeb1ed1f7b Ralph Callaway <ralph@callawaycloudconsulting.com> 1572479287 -0600	checkout: moving from add_class to del_class
-098afb04b5321cdbcc92988e00ea3afeb1ed1f7b ec53e8fce7192445628b9cf56bd5128ce7dd91e4 Ralph Callaway <ralph@callawaycloudconsulting.com> 1572479297 -0600	revert: Revert "add class"
-ec53e8fce7192445628b9cf56bd5128ce7dd91e4 37413b03aa4185af1d40ee4456dba4796144e2ce Ralph Callaway <ralph@callawaycloudconsulting.com> 1572479315 -0600	commit (amend): delete class
-37413b03aa4185af1d40ee4456dba4796144e2ce 37413b03aa4185af1d40ee4456dba4796144e2ce Ralph Callaway <ralph@callawaycloudconsulting.com> 1572479505 -0600	checkout: moving from del_class to add_field
-37413b03aa4185af1d40ee4456dba4796144e2ce 42a55c07dc3185ffeef14b858145f89a58bf493b Ralph Callaway <ralph@callawaycloudconsulting.com> 1572479514 -0600	commit: add field
-42a55c07dc3185ffeef14b858145f89a58bf493b 42a55c07dc3185ffeef14b858145f89a58bf493b Ralph Callaway <ralph@callawaycloudconsulting.com> 1572479535 -0600	checkout: moving from add_field to mod_field
-42a55c07dc3185ffeef14b858145f89a58bf493b 9f6218bae2b137291961ab341fb8ead5f064c005 Ralph Callaway <ralph@callawaycloudconsulting.com> 1572479545 -0600	commit: change field properties
-9f6218bae2b137291961ab341fb8ead5f064c005 9f6218bae2b137291961ab341fb8ead5f064c005 Ralph Callaway <ralph@callawaycloudconsulting.com> 1572479559 -0600	checkout: moving from mod_field to del_field
-9f6218bae2b137291961ab341fb8ead5f064c005 4264b4a38b0a1411c7808b4e0da5e6c7df3b4f65 Ralph Callaway <ralph@callawaycloudconsulting.com> 1572479610 -0600	commit: delete field
-4264b4a38b0a1411c7808b4e0da5e6c7df3b4f65 4264b4a38b0a1411c7808b4e0da5e6c7df3b4f65 Ralph Callaway <ralph@callawaycloudconsulting.com> 1572479628 -0600	checkout: moving from del_field to del_object
-4264b4a38b0a1411c7808b4e0da5e6c7df3b4f65 fb72cfff76a6ca8723964c893fe2238f844db795 Ralph Callaway <ralph@callawaycloudconsulting.com> 1572479689 -0600	commit: delete object
-fb72cfff76a6ca8723964c893fe2238f844db795 fb72cfff76a6ca8723964c893fe2238f844db795 Ralph Callaway <ralph@callawaycloudconsulting.com> 1572480021 -0600	checkout: moving from del_object to add_static_resource
-fb72cfff76a6ca8723964c893fe2238f844db795 9602a0bc8d3251f2d53a67bed676ffa4e37d7f0c Ralph Callaway <ralph@callawaycloudconsulting.com> 1572480038 -0600	commit: add static resource
-9602a0bc8d3251f2d53a67bed676ffa4e37d7f0c 9602a0bc8d3251f2d53a67bed676ffa4e37d7f0c Ralph Callaway <ralph@callawaycloudconsulting.com> 1572480044 -0600	checkout: moving from add_static_resource to mod_static_resource
-9602a0bc8d3251f2d53a67bed676ffa4e37d7f0c 07f725e341148444118c6aefb6cc18d22f0bb0f7 Ralph Callaway <ralph@callawaycloudconsulting.com> 1572480069 -0600	commit: modify static resource
-07f725e341148444118c6aefb6cc18d22f0bb0f7 07f725e341148444118c6aefb6cc18d22f0bb0f7 Ralph Callaway <ralph@callawaycloudconsulting.com> 1572480081 -0600	checkout: moving from mod_static_resource to mod_partially_delete_static_resource
-07f725e341148444118c6aefb6cc18d22f0bb0f7 abbe9147d4a7deca71d16ac37c0e50351b711840 Ralph Callaway <ralph@callawaycloudconsulting.com> 1572480105 -0600	commit: delete part of a static resource
-abbe9147d4a7deca71d16ac37c0e50351b711840 abbe9147d4a7deca71d16ac37c0e50351b711840 Ralph Callaway <ralph@callawaycloudconsulting.com> 1572480116 -0600	checkout: moving from mod_partially_delete_static_resource to del_static_resource
-abbe9147d4a7deca71d16ac37c0e50351b711840 4374f7e784fa2cccff7e80db248b7e7238393f6a Ralph Callaway <ralph@callawaycloudconsulting.com> 1572480159 -0600	commit: delete static resource
+0000000000000000000000000000000000000000 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499104 -0600	commit (initial): created a base project with some metadata that can be used to test modification & deletions
+8d411d5e0074d561e39cc35aec38f7e755e69604 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499144 -0600	checkout: moving from master to mod_class
+8d411d5e0074d561e39cc35aec38f7e755e69604 cc460dc03401223db47d218f3c5122841afefe03 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499169 -0600	commit: modified a class
+cc460dc03401223db47d218f3c5122841afefe03 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499174 -0600	checkout: moving from mod_class to master
+8d411d5e0074d561e39cc35aec38f7e755e69604 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499188 -0600	checkout: moving from master to mod_class_meta
+8d411d5e0074d561e39cc35aec38f7e755e69604 aca00b825d2225b601ca6bccd4bdce0a51751b0a Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499207 -0600	commit: change api version
+aca00b825d2225b601ca6bccd4bdce0a51751b0a 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499227 -0600	checkout: moving from mod_class_meta to master
+8d411d5e0074d561e39cc35aec38f7e755e69604 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499240 -0600	checkout: moving from master to mod_field
+8d411d5e0074d561e39cc35aec38f7e755e69604 1819d59ff8bfd0f16dec35644b84a3159402282b Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499273 -0600	commit: Updating a field
+1819d59ff8bfd0f16dec35644b84a3159402282b 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499283 -0600	checkout: moving from mod_field to master
+8d411d5e0074d561e39cc35aec38f7e755e69604 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499294 -0600	checkout: moving from master to mod_object
+8d411d5e0074d561e39cc35aec38f7e755e69604 e0a88fb4150ae43a190ddbc5b71329495b13707c Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499330 -0600	commit: updated foo label
+e0a88fb4150ae43a190ddbc5b71329495b13707c 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499351 -0600	checkout: moving from mod_object to master
+8d411d5e0074d561e39cc35aec38f7e755e69604 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499367 -0600	checkout: moving from master to mod_static_resource
+8d411d5e0074d561e39cc35aec38f7e755e69604 38268f39bdb0bf6fd484f3e8e0087220867fa9b5 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499398 -0600	commit: changed static resource .txt
+38268f39bdb0bf6fd484f3e8e0087220867fa9b5 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499404 -0600	checkout: moving from mod_static_resource to master
+8d411d5e0074d561e39cc35aec38f7e755e69604 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499421 -0600	checkout: moving from master to mod_partially_delete_static_resource
+8d411d5e0074d561e39cc35aec38f7e755e69604 0aac988ce70a244636e3e41069044cbed95aca04 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499442 -0600	commit: deleted one file from static resource (folder)
+0aac988ce70a244636e3e41069044cbed95aca04 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499467 -0600	checkout: moving from mod_partially_delete_static_resource to master
+8d411d5e0074d561e39cc35aec38f7e755e69604 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499472 -0600	checkout: moving from master to del_class
+8d411d5e0074d561e39cc35aec38f7e755e69604 3e9ae7f54c4954c400dbf2b3b59c8d6b6b95b552 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499484 -0600	commit: deleted a class
+3e9ae7f54c4954c400dbf2b3b59c8d6b6b95b552 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499487 -0600	checkout: moving from del_class to master
+8d411d5e0074d561e39cc35aec38f7e755e69604 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499498 -0600	checkout: moving from master to del_field
+8d411d5e0074d561e39cc35aec38f7e755e69604 6ca28dc0d4a530a2805465e4220c6973702acfe0 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499516 -0600	commit: deleted a field
+6ca28dc0d4a530a2805465e4220c6973702acfe0 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499532 -0600	checkout: moving from del_field to del_object
+8d411d5e0074d561e39cc35aec38f7e755e69604 c035a6c3e73bb3935521a631024a4cf5d0c5a050 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499552 -0600	commit: deleted an object
+c035a6c3e73bb3935521a631024a4cf5d0c5a050 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499574 -0600	checkout: moving from del_object to del_static_resource
+8d411d5e0074d561e39cc35aec38f7e755e69604 f338dc01b565c816e8faa8d5e8dbe7be9334f390 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499603 -0600	commit: deleted a static resource (single file)
+f338dc01b565c816e8faa8d5e8dbe7be9334f390 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499625 -0600	checkout: moving from del_static_resource to add_class
+8d411d5e0074d561e39cc35aec38f7e755e69604 5a3cbf0fab4e6fe1fd0a512830f9bf2b8cea23cb Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499649 -0600	commit: Added a new class
+5a3cbf0fab4e6fe1fd0a512830f9bf2b8cea23cb 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499660 -0600	checkout: moving from add_class to add_field
+8d411d5e0074d561e39cc35aec38f7e755e69604 c1c94fde73cdfff1a47e0fe7162bdc06137b2559 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499757 -0600	commit: added a field
+c1c94fde73cdfff1a47e0fe7162bdc06137b2559 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499783 -0600	checkout: moving from add_field to add_object
+8d411d5e0074d561e39cc35aec38f7e755e69604 a0a46a9f8fd191238537bd26d28b7a035f90b77f Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499833 -0600	commit: added an object
+a0a46a9f8fd191238537bd26d28b7a035f90b77f 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499844 -0600	checkout: moving from add_object to add_static_resource
+8d411d5e0074d561e39cc35aec38f7e755e69604 35a9ec2d9c608f949a4b7acb27f48102d55cc4c4 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499907 -0600	commit: added a static resource
+35a9ec2d9c608f949a4b7acb27f48102d55cc4c4 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572500837 -0600	checkout: moving from add_static_resource to del_single_file_from_folder
+8d411d5e0074d561e39cc35aec38f7e755e69604 30d3d6de84f92e87588340070a04fa5b37050a63 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572500870 -0600	commit: removed LWC file

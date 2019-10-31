@@ -1,3 +1,2 @@
-0000000000000000000000000000000000000000 6662fd6280ae07efa972d14254ccaaa4d1a8738e Ralph Callaway <ralph@callawaycloudconsulting.com> 1572071062 -0600	branch: Created from update_class
-6662fd6280ae07efa972d14254ccaaa4d1a8738e 25e87a394bbbb9b23a9014e7da8f7031db1dc2d3 Ralph Callaway <ralph@callawaycloudconsulting.com> 1572071078 -0600	commit: update meta file
-25e87a394bbbb9b23a9014e7da8f7031db1dc2d3 25e87a394bbbb9b23a9014e7da8f7031db1dc2d3 Ralph Callaway <ralph@callawaycloudconsulting.com> 1572480313 -0600	Branch: renamed refs/heads/update_meta_file to refs/heads/mod_class_meta
+0000000000000000000000000000000000000000 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499188 -0600	branch: Created from HEAD
+8d411d5e0074d561e39cc35aec38f7e755e69604 aca00b825d2225b601ca6bccd4bdce0a51751b0a Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499207 -0600	commit: change api version

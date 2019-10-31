@@ -2,7 +2,7 @@
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
   <types>
     <name>ApexClass</name>
-    <members>Example2</members>
+    <members>Example1</members>
   </types>
   <version>45.0</version>
 </Package>

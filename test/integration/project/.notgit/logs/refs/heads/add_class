@@ -1,3 +1,2 @@
-0000000000000000000000000000000000000000 a38412de7410cd81f6c42f3fe937b540e1aaeb6e Ralph Callaway <ralph@callawaycloudconsulting.com> 1572479025 -0600	branch: Created from mod_object
-a38412de7410cd81f6c42f3fe937b540e1aaeb6e d30f2dd7ebd8adf02e65eab61ce9c063c11069ae Ralph Callaway <ralph@callawaycloudconsulting.com> 1572479265 -0600	commit: prevent auto deploy from running
-d30f2dd7ebd8adf02e65eab61ce9c063c11069ae 098afb04b5321cdbcc92988e00ea3afeb1ed1f7b Ralph Callaway <ralph@callawaycloudconsulting.com> 1572479273 -0600	commit: add class
+0000000000000000000000000000000000000000 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499625 -0600	branch: Created from master
+8d411d5e0074d561e39cc35aec38f7e755e69604 5a3cbf0fab4e6fe1fd0a512830f9bf2b8cea23cb Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499649 -0600	commit: Added a new class

@@ -6,4 +6,5 @@
 /package-lock.json
 /tmp
 node_modules
-test/integration/project/deploy
+test/integration/project/*
+!test/integration/project/.notgit

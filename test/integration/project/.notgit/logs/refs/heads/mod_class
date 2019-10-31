@@ -1,4 +1,2 @@
-0000000000000000000000000000000000000000 7d4a6b3d608fc4aaf296a4af40e15a9922065567 Ralph Callaway <ralph@callawaycloudconsulting.com> 1571698790 -0600	branch: Created from HEAD
-7d4a6b3d608fc4aaf296a4af40e15a9922065567 6662fd6280ae07efa972d14254ccaaa4d1a8738e Ralph Callaway <ralph@callawaycloudconsulting.com> 1571698834 -0600	commit: update one class
-6662fd6280ae07efa972d14254ccaaa4d1a8738e 6662fd6280ae07efa972d14254ccaaa4d1a8738e Ralph Callaway <ralph@callawaycloudconsulting.com> 1571854850 -0600	Branch: renamed refs/heads/new_feature to refs/heads/update_class
-6662fd6280ae07efa972d14254ccaaa4d1a8738e 6662fd6280ae07efa972d14254ccaaa4d1a8738e Ralph Callaway <ralph@callawaycloudconsulting.com> 1572480326 -0600	Branch: renamed refs/heads/update_class to refs/heads/mod_class
+0000000000000000000000000000000000000000 8d411d5e0074d561e39cc35aec38f7e755e69604 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499144 -0600	branch: Created from HEAD
+8d411d5e0074d561e39cc35aec38f7e755e69604 cc460dc03401223db47d218f3c5122841afefe03 Charlie Jonas <charlie@callawaycloudconsulting.com> 1572499169 -0600	commit: modified a class

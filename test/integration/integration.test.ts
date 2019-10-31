@@ -1,18 +1,18 @@
-import { myExec, setGitENV, projectPath } from './util';
 import * as assert from 'assert';
 import { compareSync } from 'dir-compare';
+import { myExec, projectPath, setGitENV } from './util';
 
 async function runTest(testName: string) {
   const sourceRef = testName;
-  const targetRef = `${testName}^`;
   const expectedOutputDir = testName;
   try {
     const res = await myExec(
-      `sfdx git:package -d deploy --purge -s ${sourceRef} -t ${targetRef}`,
+      `sfdx git:package -d deploy --purge -s ${sourceRef} -t master`,
       projectPath);
     assert.equal(null, res.err);
-    const compareRes = compareSync("test/integration/project/deploy", `test/integration/output/${expectedOutputDir}`, { compareContent: true });
-    assert.strictEqual(compareRes.distinct, 0);
+    const compareRes = compareSync('test/integration/project/deploy', `test/integration/output/${expectedOutputDir}`, { compareContent: true });
+    const mismatched = compareRes.diffSet.filter(diff => diff.state !== 'equal').map(diff => diff.name1 || diff.name2);
+    assert.strictEqual(mismatched.length, 0, `The following files were different: \n${mismatched.join('\n')}`);
     assert.strictEqual(true, compareRes.equal > 0);
   } catch (e) {
     assert.fail(e);
@@ -24,7 +24,7 @@ describe('git:package integration test', async () => {
     setGitENV();
   });
 
-  describe('apex classes', async() => {
+  describe('apex classes', async () => {
     it('detects a new apex class', async () => {
       await runTest('add_class');
     });
@@ -39,7 +39,7 @@ describe('git:package integration test', async () => {
     });
   });
 
-  describe('custom fields', async() => {
+  describe('custom fields', async () => {
     it('detects a new custom field', async () => {
       await runTest('add_field');
     });
@@ -51,7 +51,7 @@ describe('git:package integration test', async () => {
     });
   });
 
-  describe('custom objects', async() => {
+  describe('custom objects', async () => {
     it('detects a new custom object', async () => {
       await runTest('add_object');
     });
@@ -63,18 +63,21 @@ describe('git:package integration test', async () => {
     });
   });
 
-  describe('static resources', async() => {
+  describe('static resources', async () => {
     it('detects a new static resource', async () => {
       await runTest('add_static_resource');
     });
     it('detects an update to a static resource', async () => {
       await runTest('mod_static_resource');
     });
-    it('detects partial deletion of a static resource', async () => {
-      await runTest('mod_partially_delete_static_resource');
-    });
     it('detects full deletion of a static resource', async () => {
       await runTest('del_static_resource');
+    });
+  });
+
+  describe('folder_types', async () => {
+    it('detects partial deletion of a folder', async () => {
+      await runTest('del_single_file_from_folder');
     });
   });
 

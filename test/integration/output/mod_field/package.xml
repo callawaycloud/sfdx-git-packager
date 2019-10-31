@@ -2,7 +2,7 @@
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
   <types>
     <name>CustomField</name>
-    <members>MyCustomObj__c.MyCustomField__c</members>
+    <members>Account.Is_Foo__c</members>
   </types>
   <version>45.0</version>
 </Package>
