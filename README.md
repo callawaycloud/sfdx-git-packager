@@ -4,9 +4,6 @@
 
 Generates a metadata package (`package.xml` & source files) for differences between two branches/commits.
 
-![Generating vs working tree](https://user-images.githubusercontent.com/5217568/65200914-e587ed80-da45-11e9-917d-a63a3c91b29f.gif)
-_Example Generating vs "working tree" & master_
-
 ## Install
 
 Run `sfdx plugins:install sfdx-git-packager`
@@ -55,9 +52,9 @@ OPTIONS
   -f, --force                                                                       Continue even if source is behind
                                                                                     target
 
-  -s, --sourceref=sourceref                                                         The git ref (branch or commit) which
-                                                                                    we are deploying from. If left
-                                                                                    blank, will use working copy
+  -s, --sourceref=sourceref                                                         [default: head] The git ref (branch
+                                                                                    or commit) which we are deploying
+                                                                                    from. If left blank, will use head
 
   -t, --targetref=targetref                                                         [default: master] The git ref
                                                                                     (branch or commit) which we are
@@ -78,12 +75,12 @@ OPTIONS
                                                                                     exists (without prompt)
 
 EXAMPLES
-  $ sfdx git:package -s my-awesome-feature -t master -d deployments/my-awesome-feature
-  $ sfdx git:package -d deployments/my-working-copy
-  $ sfdx git:package -s head -d deployments/my-working-copy
+  $ sfdx git:package -s my-awesome-feature -t master -d deploy/my-feature
+  $ sfdx git:package -d deploy/my-feature
+  $ sfdx git:package -s feature-b -d deploy/feature-b
 ```
 
-_See code: [lib/commands/git/package.js](https://github.com/ChuckJonas/sfdx-git-diff-to-pkg/blob/v0.0.5/lib/commands/git/package.js)_
+_See code: [lib/commands/git/package.js](https://github.com/ChuckJonas/sfdx-git-diff-to-pkg/blob/v0.1.0/lib/commands/git/package.js)_
 <!-- commandsstop -->
 
 ### Ignore Files

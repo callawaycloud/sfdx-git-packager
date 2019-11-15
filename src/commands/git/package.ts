@@ -25,9 +25,9 @@ export default class Package extends SfdxCommand {
   public static description = messages.getMessage('commandDescription');
 
   public static examples = [
-    '$ sfdx git:package -s my-awesome-feature -t master -d deployments/my-awesome-feature',
-    '$ sfdx git:package -d deployments/my-working-copy',
-    '$ sfdx git:package -s head -d deployments/my-working-copy'
+    '$ sfdx git:package -s my-awesome-feature -t master -d deploy/my-feature',
+    '$ sfdx git:package -d deploy/my-feature',
+    '$ sfdx git:package -s feature-b -d deploy/feature-b'
   ];
 
   // not sure what this does...
@@ -37,7 +37,7 @@ export default class Package extends SfdxCommand {
 
   protected static flagsConfig = {
     // flag with a value (-n, --name=VALUE)
-    sourceref: flags.string({ char: 's', description: messages.getMessage('fromBranchDescription') }),
+    sourceref: flags.string({ char: 's', description: messages.getMessage('fromBranchDescription'), default: 'head' }),
     targetref: flags.string({ char: 't', description: messages.getMessage('toBranchDescription'), default: 'master' }),
     outputdir: flags.string({ char: 'd', description: messages.getMessage('outputdirDescription'), required: true }),
     ignorewhitespace: flags.boolean({ char: 'w', description: messages.getMessage('ignoreWhitespace') }),
@@ -66,18 +66,14 @@ export default class Package extends SfdxCommand {
 
     const toBranch = this.flags.targetref;
     const fromBranch = this.flags.sourceref;
-    const diffArgs = ['--no-pager', 'diff', '--name-status', '--no-renames', toBranch];
-
-    if (fromBranch) {
-      diffArgs.push(fromBranch);
-    }
+    const diffArgs = ['--no-pager', 'diff', '--name-status', '--no-renames', toBranch, fromBranch];
 
     try {
-      const diffRefs = `${toBranch}...` + (fromBranch ? fromBranch : '');
+      const diffRefs = `${toBranch}...${fromBranch}`;
       const aheadBehind = await spawnPromise('git', ['rev-list', '--left-right', '--count', diffRefs], { shell: true });
       const behind = Number(aheadBehind.split(/(\s+)/)[0]);
       if (behind > 0) {
-        const behindMessage = `${fromBranch ? fromBranch : '"working tree"'} is ${behind} commit(s) behind ${toBranch}!  You probably want to rebase ${toBranch} into ${fromBranch} before deploying!`;
+        const behindMessage = `${fromBranch} is ${behind} commit(s) behind ${toBranch}!  You probably want to merge ${toBranch} into ${fromBranch} before building a package!`;
         if (!this.flags.force) {
           this.ux.warn(behindMessage + '\nUse -f to generate package anyways.');
           this.ux.error();
@@ -147,7 +143,13 @@ export default class Package extends SfdxCommand {
         await spawnPromise('sfdx', ['force:source:convert', '-d', outDir], { shell: true, cwd: tmpProject });
       }
       if (hasDeletions) {
-        await fsPromise.copyFile(`${tempDeleteProjConverted}/package.xml`, `${outDir}/destructiveChanges.xml`);
+        await fsPromise.copyFile(`${tempDeleteProjConverted}/package.xml`, `${outDir}/destructiveChangesPost.xml`);
+        if (!hasChanges) {
+          await fsPromise.writeFile(
+            `${outDir}/package.xml`,
+            '<?xml version="1.0" encoding="UTF-8"?><Package xmlns="http://soap.sforce.com/2006/04/metadata"></Package>'
+          );
+        }
       }
     } catch (e) {
       this.ux.error(e);
@@ -194,14 +196,8 @@ export default class Package extends SfdxCommand {
 
         const newPath = join(tempDir, mdPath);
         await fs.mkdirp(dirname(newPath));
-
-        if (targetRef) {
-          await copyFileFromRef(mdPath, targetRef, newPath);
-        } else {
-          await fsPromise.copyFile(mdPath, newPath);
-        }
+        await copyFileFromRef(mdPath, targetRef, newPath);
       }
-
     }
 
     return tempDir;
@@ -224,12 +220,7 @@ export default class Package extends SfdxCommand {
 
       if (this.flags.ignorewhitespace) {
         const a = await spawnPromise('git', ['show', `${this.flags.targetref}:${path}`]);
-        let b: string;
-        if (this.flags.sourceref) {
-          b = await spawnPromise('git', ['show', `${this.flags.sourceref}:${path}`]);
-        } else {
-          b = (await fsPromise.readFile(path)).toString();
-        }
+        const b = await spawnPromise('git', ['show', `${this.flags.sourceref}:${path}`]);
 
         if (!hasNonWhitespaceChanges(a, b)) {
           continue;
