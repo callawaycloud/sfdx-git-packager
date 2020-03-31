@@ -7,8 +7,7 @@ import { dirname, isAbsolute, join, relative } from 'path';
 import * as tmp from 'tmp';
 import { getResolver, resolveMetadata } from '../../metadataResolvers';
 import { convertToMetadata } from '../../sfdx';
-import { transformCustomLabels } from '../../transforms/labels';
-import { copyFileFromRef, getFileFromRef, getIgnore, purgeFolder, spawnPromise } from '../../util';
+import { copyFileFromRef, getIgnore, purgeFolder, spawnPromise } from '../../util';
 
 interface DiffResults {
   changed: string[];

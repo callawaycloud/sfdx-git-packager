@@ -80,7 +80,7 @@ EXAMPLES
   $ sfdx git:package -s feature-b -d deploy/feature-b
 ```
 
-_See code: [lib/commands/git/package.js](https://github.com/ChuckJonas/sfdx-git-diff-to-pkg/blob/v0.1.3/lib/commands/git/package.js)_
+_See code: [lib/commands/git/package.js](https://github.com/ChuckJonas/sfdx-git-diff-to-pkg/blob/v0.2.0/lib/commands/git/package.js)_
 <!-- commandsstop -->
 
 ### Ignore Files
