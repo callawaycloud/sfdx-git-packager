@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0
+
+### Added
+
+- Custom Label support
+- Ability to transform metadata source
+- started using semantic versioning
+
 ## 0.1.3
 
 ### Fixed

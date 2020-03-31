@@ -106,15 +106,26 @@ If you wish to prevent certain files from being included in a package, you can c
 
 We've got a git repo in `test/integration/project` that represents a project. In order to avoid conflicts with the parent repo folders we change the .git folder to .notgit so we can commit those to the repo. You'll need to "unpack" that repo if you want to easily work in the test git repo when expanding the integration suite.
 
-To add tests
+**To add new tests**
 
-1. unpack the test repo `npm run tgu`
+1. revert the `.git` file: `npm run tgu`
 1. go to the test project `cd test/integration/project`
-1. run `git reset --hard` to bring everything back
 1. create a branch off of `master`, make the mods you want to test, and commit
 1. generate the expected output `npm run gen`
 1. check the contents of `test/integration/output` matches what you'd expect for your change (make sure to check there are no other unexpected changes!)
+1. add a new test to `test/integration/integration.test.ts`
 1. pack the test repo back up `npm run tgp`
+
+**Updating the base state (master)**
+
+You might find the base state (master branch) is not setup properly in order to perform some test (you add a support for metadata not part of master).  If you need to modify the base state, follow these instructions:
+
+1. Open the integration project.  Run `npm run tgu` if you haven't already.
+1. `git checkout master`
+1. make your changes.  Try to avoid making changes that will cause merge conflicts on any of the other branches
+1. commit your changes to master
+1. Sync master to all other branches by running `./syncMaster.sh`
+
 
 ## Disclaimer
 

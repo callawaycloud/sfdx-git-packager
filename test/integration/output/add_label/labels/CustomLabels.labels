@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Buzz</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Buzz</shortDescription>
+        <value>Buzz</value>
+    </labels>
+</CustomLabels>

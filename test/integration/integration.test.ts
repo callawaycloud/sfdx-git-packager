@@ -68,6 +68,15 @@ describe('git:package integration test', async () => {
     });
   });
 
+  describe('custom labels', async () => {
+    it('detects a new custom label', async () => {
+      await runTest('add_label');
+    });
+    it('detects an update to an custom object', async () => {
+      await runTest('mod_label');
+    });
+  });
+
   describe('static resources', async () => {
     it('detects a new static resource', async () => {
       await runTest('add_static_resource');
