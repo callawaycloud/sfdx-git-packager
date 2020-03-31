@@ -6,6 +6,7 @@ import { promises as fsPromise } from 'fs';
 import { dirname, isAbsolute, join, relative } from 'path';
 import * as tmp from 'tmp';
 import { getResolver, resolveMetadata } from '../../metadataResolvers';
+import { convertToMetadata } from '../../sfdx';
 import { copyFileFromRef, getIgnore, purgeFolder, spawnPromise } from '../../util';
 
 interface DiffResults {
@@ -102,7 +103,7 @@ export default class Package extends SfdxCommand {
       if (hasDeletions) {
         tmpDeleteProj = await this.setupTmpProject(diffResults.removed, toBranch);
         tempDeleteProjConverted = await this.mkTempDir();
-        await spawnPromise('sfdx', ['force:source:convert', '-d', tempDeleteProjConverted], { shell: true, cwd: tmpDeleteProj });
+        await convertToMetadata(tempDeleteProjConverted, tmpDeleteProj);
       }
 
       // create a temp project so we can leverage force:source:convert for primary deploy
@@ -140,7 +141,7 @@ export default class Package extends SfdxCommand {
       await fs.mkdirp(outDir);
 
       if (hasChanges) {
-        await spawnPromise('sfdx', ['force:source:convert', '-d', outDir], { shell: true, cwd: tmpProject });
+        await convertToMetadata(outDir, tmpProject);
       }
       if (hasDeletions) {
         await fsPromise.copyFile(`${tempDeleteProjConverted}/package.xml`, `${outDir}/destructiveChangesPost.xml`);

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2
+
+### Fixed
+
+- Crash when spaces in project path
+
 ## 0.1.1
 
 ### Fixed

@@ -80,7 +80,7 @@ EXAMPLES
   $ sfdx git:package -s feature-b -d deploy/feature-b
 ```
 
-_See code: [lib/commands/git/package.js](https://github.com/ChuckJonas/sfdx-git-diff-to-pkg/blob/v0.1.1/lib/commands/git/package.js)_
+_See code: [lib/commands/git/package.js](https://github.com/ChuckJonas/sfdx-git-diff-to-pkg/blob/v0.1.2/lib/commands/git/package.js)_
 <!-- commandsstop -->
 
 ### Ignore Files
@@ -88,8 +88,6 @@ _See code: [lib/commands/git/package.js](https://github.com/ChuckJonas/sfdx-git-
 If you wish to prevent certain files from being included in a package, you can create a `.packageIgnore` in the root of your project. This works similar to [`.gitIgnore`](https://git-scm.com/docs/gitignore). You can add globs to prevent source path from being picked up.
 
 ## Developing
-
-(`NPM` based install coming soon)
 
 1. git clone
 1. cd
