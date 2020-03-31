@@ -35,11 +35,15 @@ export function spawnPromise(cmd: string, args: string[], options?: SpawnOptions
 }
 
 export async function copyFileFromRef(path: string, ref: string, destination: string) {
-  const source = await spawnPromise('git', ['show', `${ref}:${path}`]);
+  const source = await getFileFromRef(path, ref);
   await fs.promises.writeFile(destination, source);
 }
 
-export async function getFilesFromRef(dir: string, ref: string): Promise<string[]> {
+export async function getFileFromRef(path: string, ref: string) {
+  return await spawnPromise('git', ['show', `${ref}:${path}`]);
+}
+
+export async function getDirChildrenFromRef(dir: string, ref: string): Promise<string[]> {
   // probably a better way to check if the file exists
   try {
     return (await spawnPromise('git', ['ls-tree', '-r', '--name-only', `${ref}:${dir}`]))

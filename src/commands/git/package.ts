@@ -7,7 +7,8 @@ import { dirname, isAbsolute, join, relative } from 'path';
 import * as tmp from 'tmp';
 import { getResolver, resolveMetadata } from '../../metadataResolvers';
 import { convertToMetadata } from '../../sfdx';
-import { copyFileFromRef, getIgnore, purgeFolder, spawnPromise } from '../../util';
+import { transformCustomLabels } from '../../transforms/labels';
+import { copyFileFromRef, getFileFromRef, getIgnore, purgeFolder, spawnPromise } from '../../util';
 
 interface DiffResults {
   changed: string[];
@@ -173,31 +174,32 @@ export default class Package extends SfdxCommand {
     return tempDir;
   }
 
-  private async setupTmpProject(changed: string[], targetRef: string | undefined) {
+  private async setupTmpProject(changed: string[], sourceRef: string | undefined) {
     const tempDir = await this.mkTempDir();
 
     for (const sourcePath of this.sourcePaths) {
       await fs.mkdirp(join(tempDir, sourcePath));
     }
 
-    await copyFileFromRef('sfdx-project.json', targetRef, join(tempDir, 'sfdx-project.json'));
+    await copyFileFromRef('sfdx-project.json', sourceRef, join(tempDir, 'sfdx-project.json'));
 
     for (const path of changed) {
-      const metadataPaths = await resolveMetadata(path, targetRef);
 
-      if (!metadataPaths) {
+      const resolvedMetadata = await resolveMetadata(path, sourceRef, this.flags.targetref);
+
+      if (!resolvedMetadata) {
         this.ux.warn(`Could not resolve metadata for ${path}`);
         continue;
       }
 
-      for (let mdPath of metadataPaths) {
+      for (const resolved of resolvedMetadata) {
+        let mdPath = resolved.path;
         if (isAbsolute(mdPath)) {
           mdPath = relative(this.projectPath, mdPath);
         }
-
         const newPath = join(tempDir, mdPath);
         await fs.mkdirp(dirname(newPath));
-        await copyFileFromRef(mdPath, targetRef, newPath);
+        await fs.writeFile(newPath, resolved.source);
       }
     }
 

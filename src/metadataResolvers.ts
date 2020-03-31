@@ -1,5 +1,6 @@
 import { extname } from 'path';
-import { getFilesFromRef } from './util';
+import { transformCustomLabels } from './transforms/labels';
+import { getDirChildrenFromRef, getFileFromRef } from './util';
 
 // these need to be re-written for windows... maybe use globs instead
 const AURA_REGEX = /(.*\/aura\/\w*)\/.*/;
@@ -8,10 +9,13 @@ const COMP_META = /.*(.cls|\.trigger|\.page|\.component)-meta.xml/;
 const STATIC_RESOURCE_FOLDER_REGEX = /(.*\/staticresources\/\w*)\/.*/;
 const STATIC_RESOURCE_FILE_REGEX = /(.*\/staticresources\/\w*)\.\w*/;
 
+export type ResolvedSource = {path: string, source: string};
+
 interface MetadataResolver {
   match: ((path: string) => boolean) | RegExp;
   getMetadataPaths: (path: string, ref: string) => Promise<string[]>;
   getIsDirectory: () => boolean;
+  transform?: (newSource: string, oldSource: string) => Promise<string>;
 }
 
 // order from most selective to least
@@ -32,6 +36,18 @@ const metadataResolvers: MetadataResolver[] = [
     },
     getIsDirectory: () => false
   },
+  { // labels
+    match: path => {
+      return path.endsWith('labels-meta.xml');
+    },
+    getMetadataPaths: async (path: string, ref: string) => {
+      return [path];
+    },
+    getIsDirectory: () => false,
+    transform: async (newSource: string, oldSource: string) => {
+      return transformCustomLabels(newSource, oldSource);
+    }
+  },
   { // other metadata
     match: path => {
       return path.endsWith('-meta.xml');
@@ -45,7 +61,7 @@ const metadataResolvers: MetadataResolver[] = [
     match: AURA_REGEX,
     getMetadataPaths: async (path: string, ref: string) => {
       const appDir = AURA_REGEX.exec(path)[1];
-      return await getFilesFromRef(appDir, ref);
+      return await getDirChildrenFromRef(appDir, ref);
     },
     getIsDirectory: () => true
   },
@@ -53,7 +69,7 @@ const metadataResolvers: MetadataResolver[] = [
     match: LWC_REGEX,
     getMetadataPaths: async (path: string, ref: string) => {
       const appDir = LWC_REGEX.exec(path)[1];
-      return await getFilesFromRef(appDir, ref);
+      return await getDirChildrenFromRef(appDir, ref);
     },
     getIsDirectory: () => true
   },
@@ -61,7 +77,7 @@ const metadataResolvers: MetadataResolver[] = [
     match: STATIC_RESOURCE_FOLDER_REGEX,
     getMetadataPaths: async (path: string, ref: string) => {
       const appDir = STATIC_RESOURCE_FOLDER_REGEX.exec(path)[1];
-      return [...await getFilesFromRef(appDir, ref), `${appDir}.resource-meta.xml`];
+      return [...await getDirChildrenFromRef(appDir, ref), `${appDir}.resource-meta.xml`];
     },
     getIsDirectory: () => true
   },
@@ -86,7 +102,28 @@ export function getResolver(path: string) {
 }
 
 // given a path, return all other paths that must be included along side for a valid deployment
-export function resolveMetadata(path: string, ref: string) {
+export async function resolveMetadata(path: string, sourceRef: string, targetRef: string) {
   const resolver = getResolver(path);
-  return resolver && resolver.getMetadataPaths(path, ref);
+  if (resolver) {
+    const paths = await resolver.getMetadataPaths(path, sourceRef);
+    const resolved: ResolvedSource[] = [];
+    for (path of paths) {
+      let source: string;
+      if (resolver.transform) {
+        const newSource = await getFileFromRef(path, sourceRef);
+        const oldSource = await getFileFromRef(path, targetRef);
+        source = await resolver.transform(newSource, oldSource);
+      } else {
+        source = await getFileFromRef(path, sourceRef);
+      }
+
+      if (source) {
+        resolved.push({
+          path,
+          source
+        });
+      }
+    }
+    return resolved;
+  }
 }
