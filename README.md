@@ -2,13 +2,15 @@
 
 ![npm](https://img.shields.io/npm/v/sfdx-git-packager) [![Build Status](https://travis-ci.org/ChuckJonas/sfdx-git-packager.svg?branch=master)](https://travis-ci.org/ChuckJonas/sfdx-git-packager)
 
-Generates a metadata package (`package.xml` & source files) for differences between two branches/commits.
+Generates a metadata package (`package.xml` & source files) for differences between two git refs (branches or commits).
 
-## Install
+The goal of this project is to be able to generate incremental, deployable packages to use in a CI or developer workflows (see our [Callaway Cloud CI](https://github.com/ChuckJonas/generator-ccc/blob/master/generators/app/templates/static/build/pipelines-setup.md) for an example).  Unfortunately, there are still some scenario's which are not supported.  We attempt to document these problems and workarounds in [this document](https://github.com/ChuckJonas/sfdx-git-packager/blob/master/common-issues.md).
+
+## 📦 Install
 
 Run `sfdx plugins:install sfdx-git-packager`
 
-## Features
+## ✨Features
 
 **Currently supports:**
 
@@ -19,16 +21,17 @@ Run `sfdx plugins:install sfdx-git-packager`
 - LWC
 - CustomObject
 - CustomField
-- StaticResources
+- StaticResources (both folders and single files)
+- CustomLabels (partial changes)
 - all other simple \*-meta.xml files
 - Destructive Changes!
 
 **Not yet supported:**
 
+- Partial profile deployments
 - ??? (please submit an issue if you run into anything else)
-- Windows (needs testing)
 
-## Usage
+## 🔨 Usage
 
 Must be run from inside an sfdx project with an initialized git repo.
 
@@ -87,7 +90,9 @@ _See code: [lib/commands/git/package.js](https://github.com/ChuckJonas/sfdx-git-
 
 If you wish to prevent certain files from being included in a package, you can create a `.packageIgnore` in the root of your project. This works similar to [`.gitIgnore`](https://git-scm.com/docs/gitignore). You can add globs to prevent source path from being picked up.
 
-## Developing
+## 🤝 Contributing
+
+### Project setup
 
 1. git clone
 1. cd
