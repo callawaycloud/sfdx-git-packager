@@ -38,7 +38,7 @@ export default class Package extends SfdxCommand {
 
   protected static flagsConfig = {
     // flag with a value (-n, --name=VALUE)
-    sourceref: flags.string({ char: 's', description: messages.getMessage('fromBranchDescription'), default: 'head' }),
+    sourceref: flags.string({ char: 's', description: messages.getMessage('fromBranchDescription'), default: 'HEAD' }),
     targetref: flags.string({ char: 't', description: messages.getMessage('toBranchDescription'), default: 'master' }),
     outputdir: flags.string({ char: 'd', description: messages.getMessage('outputdirDescription'), required: true }),
     ignorewhitespace: flags.boolean({ char: 'w', description: messages.getMessage('ignoreWhitespace') }),
