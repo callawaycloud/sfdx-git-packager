@@ -55,7 +55,7 @@ OPTIONS
   -f, --force                                                                       Continue even if source is behind
                                                                                     target
 
-  -s, --sourceref=sourceref                                                         [default: head] The git ref (branch
+  -s, --sourceref=sourceref                                                         [default: HEAD] The git ref (branch
                                                                                     or commit) which we are deploying
                                                                                     from. If left blank, will use head
 
@@ -83,7 +83,7 @@ EXAMPLES
   $ sfdx git:package -s feature-b -d deploy/feature-b
 ```
 
-_See code: [lib/commands/git/package.js](https://github.com/ChuckJonas/sfdx-git-diff-to-pkg/blob/v0.2.0/lib/commands/git/package.js)_
+_See code: [lib/commands/git/package.js](https://github.com/ChuckJonas/sfdx-git-diff-to-pkg/blob/v0.2.1/lib/commands/git/package.js)_
 <!-- commandsstop -->
 
 ### Ignore Files

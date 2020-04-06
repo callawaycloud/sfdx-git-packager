@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1
+
+### Fixed
+
+- `HEAD` is case sensitive on linux
+
 ## 0.2.0
 
 ### Added
