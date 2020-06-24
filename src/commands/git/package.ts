@@ -148,7 +148,7 @@ export default class Package extends SfdxCommand {
         if (!hasChanges) {
           await fsPromise.writeFile(
             `${outDir}/package.xml`,
-            '<?xml version="1.0" encoding="UTF-8"?><Package xmlns="http://soap.sforce.com/2006/04/metadata"></Package>'
+            '<?xml version="1.0" encoding="UTF-8"?><Package xmlns="http://soap.sforce.com/2006/04/metadata"><version>45.0</version></Package>'
           );
         }
       }
