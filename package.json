@@ -70,6 +70,8 @@
     "posttest": "tslint -p test -t stylish",
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
     "test": "nyc --extension .ts mocha --timeout 99999 --forbid-only \"test/{*.test.ts,!(integration)/**/*.test.ts}\"",
+    "test:integration": "npm run integrationTest",
+    "test:generate:output": "npm run gen",
     "integrationTest": "nyc --extension .ts mocha --timeout 99999 --forbid-only \"test/integration/**/*.test.ts\"",
     "version": "oclif-dev readme && git add README.md",
     "tgp": "mv test/integration/project/.git test/integration/project/.notgit",
