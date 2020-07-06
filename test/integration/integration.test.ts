@@ -95,4 +95,17 @@ describe('git:package integration test', async () => {
     });
   });
 
+  describe('content assets', async() => {
+    it('detects new content assets', async () => {
+      await runTest('add_content_asset');
+    });
+
+    it('detects an update to content assets', async () => {
+      await runTest('mod_content_asset');
+    });
+
+    it('detects full deletion of content assets', async () => {
+      await runTest('del_content_asset');
+    });
+  });
 });

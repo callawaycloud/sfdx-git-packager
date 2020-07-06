@@ -1,0 +1,5 @@
+0000000000000000000000000000000000000000 e96fd19fce8cf550d402834e38e7f992c4ee5c97 Konstantin Büschel <konstantin.bueschel@gmail.com> 1594039485 +0200	branch: Created from HEAD
+e96fd19fce8cf550d402834e38e7f992c4ee5c97 c5efde05d862c88ff2e563ba1c71a99fb04215c0 Konstantin Büschel <konstantin.bueschel@gmail.com> 1594039515 +0200	branch: Reset to HEAD
+c5efde05d862c88ff2e563ba1c71a99fb04215c0 7d6c7e7d7627ec140c2ec81c5a06fd7a77b6ced0 Konstantin Büschel <konstantin.bueschel@gmail.com> 1594039552 +0200	commit: fix: delete first example content asset
+7d6c7e7d7627ec140c2ec81c5a06fd7a77b6ced0 e96fd19fce8cf550d402834e38e7f992c4ee5c97 Konstantin Büschel <konstantin.bueschel@gmail.com> 1594039961 +0200	branch: Reset to HEAD
+e96fd19fce8cf550d402834e38e7f992c4ee5c97 050153e345e4c07bd3fa3b6a441e58330e212330 Konstantin Büschel <konstantin.bueschel@gmail.com> 1594040009 +0200	commit: fix: delete content asset

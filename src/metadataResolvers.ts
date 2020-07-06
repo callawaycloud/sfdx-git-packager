@@ -22,7 +22,14 @@ interface MetadataResolver {
 const metadataResolvers: MetadataResolver[] = [
   { // MD that has paired -meta.xml file.  Probably missing some types
     match: path => {
-      return ['.cls', '.trigger', '.page', '.component', '.email'].includes(extname(path));
+      return [
+        '.asset',
+        '.cls',
+        '.component',
+        '.email',
+        '.page',
+        '.trigger'
+      ].includes(extname(path));
     },
     getMetadataPaths: async (path: string) => {
       return [path, path + '-meta.xml'];
