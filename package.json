@@ -1,9 +1,9 @@
 {
   "name": "sfdx-git-packager",
   "description": "Generates a package.xml for difference between two branches",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "author": "Charlie Jonas @ChuckJonas",
-  "bugs": "https://github.com/ChuckJonas/sfdx-git-diff-to-pkg/issues",
+  "bugs": "https://github.com/callawaycloud/sfdx-git-packager/issues",
   "dependencies": {
     "@oclif/command": "^1",
     "@oclif/config": "^1",
@@ -47,7 +47,7 @@
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/ChuckJonas/sfdx-git-diff-to-pkg",
+  "homepage": "https://github.com/callawaycloud/sfdx-git-packager",
   "keywords": [
     "sfdx-plugin"
   ],
@@ -64,12 +64,14 @@
       "@oclif/plugin-help"
     ]
   },
-  "repository": "ChuckJonas/sfdx-git-diff-to-pkg",
+  "repository": "https://github.com/callawaycloud/sfdx-git-packager.git",
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "tslint -p test -t stylish",
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
     "test": "nyc --extension .ts mocha --timeout 99999 --forbid-only \"test/{*.test.ts,!(integration)/**/*.test.ts}\"",
+    "test:integration": "npm run integrationTest",
+    "test:generate:output": "npm run gen",
     "integrationTest": "nyc --extension .ts mocha --timeout 99999 --forbid-only \"test/integration/**/*.test.ts\"",
     "version": "oclif-dev readme && git add README.md",
     "tgp": "mv test/integration/project/.git test/integration/project/.notgit",

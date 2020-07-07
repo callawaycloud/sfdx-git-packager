@@ -5,4 +5,4 @@ install:
   - npm install
   - npm install --global sfdx-cli
 script:
-  - npm run integrationTest
+  - npm run test:integration
