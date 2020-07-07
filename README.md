@@ -1,10 +1,10 @@
 # sfdx-git-packager
 
-![npm](https://img.shields.io/npm/v/sfdx-git-packager) [![Build Status](https://travis-ci.org/ChuckJonas/sfdx-git-packager.svg?branch=master)](https://travis-ci.org/ChuckJonas/sfdx-git-packager)
+![npm](https://img.shields.io/npm/v/sfdx-git-packager) [![Build Status](https://travis-ci.org/callawaycloud/sfdx-git-packager.svg?branch=master)](https://travis-ci.org/ChuckJonas/sfdx-git-packager)
 
 Generates a metadata package (`package.xml` & source files) for differences between two git refs (branches or commits).
 
-The goal of this project is to be able to generate incremental, deployable packages to use in a CI or developer workflows (see our [Callaway Cloud CI](https://github.com/ChuckJonas/generator-ccc/blob/master/generators/app/templates/static/build/pipelines-setup.md) for an example).  Unfortunately, there are still some scenario's which are not supported.  We attempt to document these problems and workarounds in [this document](https://github.com/ChuckJonas/sfdx-git-packager/blob/master/common-issues.md).
+The goal of this project is to be able to generate incremental, deployable packages to use in a CI or developer workflows (see our [Callaway Cloud CI](https://github.com/ChuckJonas/generator-ccc/blob/master/generators/app/templates/static/build/pipelines-setup.md) for an example). Unfortunately, there are still some scenario's which are not supported. We attempt to document these problems and workarounds in [this document](https://github.com/ChuckJonas/sfdx-git-packager/blob/master/common-issues.md).
 
 ## 📦 Install
 
@@ -36,7 +36,8 @@ Run `sfdx plugins:install sfdx-git-packager`
 Must be run from inside an sfdx project with an initialized git repo.
 
 <!-- commands -->
-* [`sfdx git:package -d <string> [-s <string>] [-t <string>] [-w] [--purge] [--nodelete] [-f] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-gitpackage--d-string--s-string--t-string--w---purge---nodelete--f---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+
+- [`sfdx git:package -d <string> [-s <string>] [-t <string>] [-w] [--purge] [--nodelete] [-f] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-gitpackage--d-string--s-string--t-string--w---purge---nodelete--f---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
 
 ## `sfdx git:package -d <string> [-s <string>] [-t <string>] [-w] [--purge] [--nodelete] [-f] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -44,7 +45,7 @@ Generates a Metadata Package using the differences between two git refs (branch 
 
 ```
 USAGE
-  $ sfdx git:package -d <string> [-s <string>] [-t <string>] [-w] [--purge] [--nodelete] [-f] [--json] [--loglevel 
+  $ sfdx git:package -d <string> [-s <string>] [-t <string>] [-w] [--purge] [--nodelete] [-f] [--json] [--loglevel
   trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
 OPTIONS
@@ -83,7 +84,8 @@ EXAMPLES
   $ sfdx git:package -s feature-b -d deploy/feature-b
 ```
 
-_See code: [lib/commands/git/package.js](https://github.com/ChuckJonas/sfdx-git-diff-to-pkg/blob/v0.2.1/lib/commands/git/package.js)_
+_See code: [lib/commands/git/package.js](https://github.com/ChuckJonas/sfdx-git-diff-to-pkg/blob/v0.2.2/lib/commands/git/package.js)_
+
 <!-- commandsstop -->
 
 ### Ignore Files
@@ -123,14 +125,13 @@ We've got a git repo in `test/integration/project` that represents a project. In
 
 **Updating the base state (master)**
 
-You might find the base state (master branch) is not setup properly in order to perform some test (you add a support for metadata not part of master).  If you need to modify the base state, follow these instructions:
+You might find the base state (master branch) is not setup properly in order to perform some test (you add a support for metadata not part of master). If you need to modify the base state, follow these instructions:
 
-1. Open the integration project.  Run `npm run tgu` if you haven't already.
+1. Open the integration project. Run `npm run tgu` if you haven't already.
 1. `git checkout master`
-1. make your changes.  Try to avoid making changes that will cause merge conflicts on any of the other branches
+1. make your changes. Try to avoid making changes that will cause merge conflicts on any of the other branches
 1. commit your changes to master
 1. Sync master to all other branches by running `./syncMaster.sh`
-
 
 ## Disclaimer
 
