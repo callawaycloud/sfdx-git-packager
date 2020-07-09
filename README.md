@@ -84,7 +84,7 @@ EXAMPLES
   $ sfdx git:package -s feature-b -d deploy/feature-b
 ```
 
-_See code: [lib/commands/git/package.js](https://github.com/ChuckJonas/sfdx-git-diff-to-pkg/blob/v0.2.2/lib/commands/git/package.js)_
+_See code: [lib/commands/git/package.js](https://github.com/callawaycloud/sfdx-git-packager/blob/v0.3.0/lib/commands/git/package.js)_
 
 <!-- commandsstop -->
 
@@ -107,7 +107,9 @@ If you wish to prevent certain files from being included in a package, you can c
 
 #### Integration Testing
 
-`npm run integrationTest` runs integration test suite
+`npm run test:integration` runs integration test suite
+
+_Note: To run a specific test or suite you can use `npm run test:integration -- --grep "your test name"`_
 
 #### Setting Up Integration Tests
 
@@ -119,9 +121,10 @@ We've got a git repo in `test/integration/project` that represents a project. In
 1. go to the test project `cd test/integration/project`
 1. create a branch off of `master`, make the mods you want to test, and commit
 1. generate the expected output `npm run gen`
-1. check the contents of `test/integration/output` matches what you'd expect for your change (make sure to check there are no other unexpected changes!)
+1. check the contents of `test/integration/output` matches what you'd expect for your change (make sure to check there are no other unexpected changes. DO NOT blind commit changes to other outputs!)
 1. add a new test to `test/integration/integration.test.ts`
 1. pack the test repo back up `npm run tgp`
+1. commit changes
 
 **Updating the base state (master)**
 

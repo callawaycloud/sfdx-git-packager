@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.3.0
+
+### Fixed
+
+- bug with ignore whitespace flag on non-modified changes
+
+### Added
+
+- Ability to pass flags into integration tests
+- Test for ignore whitespace flag
+
+## 0.3.0
+
+### Added
+
+- support for `ContentAsset`
+
 ## 0.2.1
 
 ### Fixed
