@@ -3,19 +3,19 @@ import { compareSync } from 'dir-compare';
 import { resolve } from 'path';
 import { myExec, projectPath, setGitENV } from './util';
 
-async function runTest(testName: string) {
+async function runTest(testName: string, params?: string[]) {
   const sourceRef = testName;
   const expectedOutputDir = testName;
   try {
     const program = resolve(__dirname, '..', '..', 'bin', 'run');
     const res = await myExec(
-      `${program} git:package -d deploy --purge -s ${sourceRef} -t master`,
+      `${program} git:package -d deploy --purge -s ${sourceRef} -t master ${params ? params.join(' ') : ''}`,
       projectPath);
 
     assert.equal(null, res.err);
     const compareRes = compareSync('test/integration/project/deploy', `test/integration/output/${expectedOutputDir}`, { compareContent: true });
     const mismatched = compareRes.diffSet.filter(diff => diff.state !== 'equal').map(diff => diff.name1 || diff.name2);
-    assert.strictEqual(mismatched.length, 0, `The following files were different: \n${mismatched.join('\n')}`);
+    assert.strictEqual(mismatched.length, 0, `${mismatched.length} file(s) were different: \n${mismatched.join('\n')}`);
     assert.strictEqual(true, compareRes.equal > 0);
   } catch (e) {
     assert.fail(e);
@@ -95,7 +95,7 @@ describe('git:package integration test', async () => {
     });
   });
 
-  describe('content assets', async() => {
+  describe('content assets', async () => {
     it('detects new content assets', async () => {
       await runTest('add_content_asset');
     });
@@ -106,6 +106,12 @@ describe('git:package integration test', async () => {
 
     it('detects full deletion of content assets', async () => {
       await runTest('del_content_asset');
+    });
+  });
+
+  describe('ignore whitespace flag', async () => {
+    it('ignores whitespace on modified files', async () => {
+      await runTest('ignore_whitespace', ['-w']);
     });
   });
 });

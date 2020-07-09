@@ -220,15 +220,6 @@ export default class Package extends SfdxCommand {
         continue;
       }
 
-      if (this.flags.ignorewhitespace) {
-        const a = await spawnPromise('git', ['show', `${this.flags.targetref}:${path}`]);
-        const b = await spawnPromise('git', ['show', `${this.flags.sourceref}:${path}`]);
-
-        if (!hasNonWhitespaceChanges(a, b)) {
-          continue;
-        }
-      }
-
       // check that path is part of the sfdx projectDirectories...
       //   There's most certainty a better way to do this
       const inProjectSource = this.sourcePaths.reduce((inSource, sPath) => {
@@ -241,6 +232,17 @@ export default class Package extends SfdxCommand {
       if (status === 'D') {
         removed.push(path);
       } else {
+        if (status === 'M') {
+          if (this.flags.ignorewhitespace) {
+            const a = await spawnPromise('git', ['show', `${this.flags.targetref}:${path}`]);
+            const b = await spawnPromise('git', ['show', `${this.flags.sourceref}:${path}`]);
+
+            if (!hasNonWhitespaceChanges(a, b)) {
+              continue;
+            }
+          }
+        }
+
         changed.push(path);
       }
 
