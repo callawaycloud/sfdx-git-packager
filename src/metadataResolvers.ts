@@ -1,7 +1,8 @@
+
+import { isText } from 'istextorbinary';
 import { extname } from 'path';
 import { transformCustomLabels } from './transforms/labels';
-import { getDirChildrenFromRef, getFileFromRef } from './util';
-
+import { getDirChildrenFromRef, getFileFromRef, pipeFileFromRef } from './util';
 // these need to be re-written for windows... maybe use globs instead
 const AURA_REGEX = /(.*\/aura\/\w*)\/.*/;
 const LWC_REGEX = /(.*\/lwc\/\w*)\/.*/;
@@ -9,7 +10,9 @@ const COMP_META = /.*(.cls|\.trigger|\.page|\.component)-meta.xml/;
 const STATIC_RESOURCE_FOLDER_REGEX = /(.*\/staticresources\/\w*)\/.*/;
 const STATIC_RESOURCE_FILE_REGEX = /(.*\/staticresources\/\w*)\.\w*/;
 
-export type ResolvedSource = {path: string, source: string};
+export type SourceResolveFn = (destination: string) => Promise<any>;
+
+export type ResolvedSource = { path: string, source: string | SourceResolveFn };
 
 interface MetadataResolver {
   match: ((path: string) => boolean) | RegExp;
@@ -115,13 +118,14 @@ export async function resolveMetadata(path: string, sourceRef: string, targetRef
     const paths = await resolver.getMetadataPaths(path, sourceRef);
     const resolved: ResolvedSource[] = [];
     for (path of paths) {
-      let source: string;
-      if (resolver.transform) {
+      let source: string | SourceResolveFn;
+
+      if (isText(path) && resolver.transform) {
         const newSource = await getFileFromRef(path, sourceRef);
         const oldSource = await getFileFromRef(path, targetRef);
         source = await resolver.transform(newSource, oldSource);
       } else {
-        source = await getFileFromRef(path, sourceRef);
+        source = pipeFileFromRef(path, sourceRef);
       }
 
       if (source) {

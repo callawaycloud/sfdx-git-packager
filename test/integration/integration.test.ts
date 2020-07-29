@@ -87,6 +87,9 @@ describe('git:package integration test', async () => {
     it('detects full deletion of a static resource', async () => {
       await runTest('del_static_resource');
     });
+    it('copies binary files without change', async () => {
+      await runTest('add_static_resource_zip');
+    });
   });
 
   describe('folder_types', async () => {

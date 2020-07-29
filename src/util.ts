@@ -34,6 +34,29 @@ export function spawnPromise(cmd: string, args: string[], options?: SpawnOptions
   });
 }
 
+export function pipeFileFromRef(path: string, ref: string) {
+  return (destination: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      const out = fs.createWriteStream(destination, { encoding: 'binary' });
+
+      const convert = spawn('git', ['show', `${ref}:${path}`]);
+      convert.stdout.on('data', data => {
+        out.write(data);
+      });
+
+      convert.on('exit', code => {
+        out.end();
+        resolve();
+      });
+
+      convert.on('error', err => {
+        reject(err);
+      });
+    });
+
+  };
+}
+
 export async function copyFileFromRef(path: string, ref: string, destination: string) {
   const source = await getFileFromRef(path, ref);
   await fs.promises.writeFile(destination, source);

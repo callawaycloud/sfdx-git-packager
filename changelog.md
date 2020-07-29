@@ -4,6 +4,12 @@
 
 ### Fixed
 
+- bug with binary files being corrupted
+
+## 0.3.1
+
+### Fixed
+
 - bug with ignore whitespace flag on non-modified changes
 
 ### Added

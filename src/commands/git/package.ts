@@ -198,7 +198,11 @@ export default class Package extends SfdxCommand {
         }
         const newPath = join(tempDir, mdPath);
         await fs.mkdirp(dirname(newPath));
-        await fs.writeFile(newPath, resolved.source);
+        if (typeof resolved.source === 'string') {
+          await fs.writeFile(newPath, resolved.source);
+        } else {
+          await resolved.source(newPath);
+        }
       }
     }
 
