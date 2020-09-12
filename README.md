@@ -9,8 +9,8 @@ The goal of this project is to be able to generate incremental (delta), deployab
 ***Is this tool right for me?***
 
 - ✅  you use the "sfdx source format" (with or without manifest)
-- ✅  you use gitflow or a similar branch strategy where ORG's (production, QA, etc) are tracked in source control.
-- ✅  you want a CI or deployment process that ONLY deploys delta changes
+- ✅  you use gitflow or a similar branch strategy where your ORG's are tracked in source control (production, QA, etc).
+- ✅  you want a CI or release process that ONLY deploys delta changes
 
 ## 📦 Install
 
