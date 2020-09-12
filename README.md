@@ -4,11 +4,18 @@
 
 Generates a metadata package (`package.xml` & source files) for differences between two git refs (branches or commits).
 
-The goal of this project is to be able to generate incremental, deployable packages to use in a CI or developer workflows (see our [Callaway Cloud CI](https://github.com/ChuckJonas/generator-ccc/blob/master/generators/app/templates/static/build/pipelines-setup.md) for an example). Unfortunately, there are still some scenario's which are not supported. We attempt to document these problems and workarounds in [this document](https://github.com/ChuckJonas/sfdx-git-packager/blob/master/common-issues.md).
+The goal of this project is to be able to generate incremental (delta), deployable packages to use in a CI or developer workflows (see our [Callaway Cloud CI](https://github.com/ChuckJonas/generator-ccc/blob/master/generators/app/templates/static/build/pipelines-setup.md) for an example). Unfortunately, there are still some scenario's which are not supported. We attempt to document these problems and workarounds in [this document](https://github.com/ChuckJonas/sfdx-git-packager/blob/master/common-issues.md).
+
+***Is this tool right for me?***
+
+- ✅  you use the "sfdx source format" (with or without manifest)
+- ✅  you use gitflow or a similar branch strategy where ORG's (production, QA, etc) are tracked in source control.
+- ✅  you want a CI or deployment process that ONLY deploys delta changes
 
 ## 📦 Install
 
 Run `sfdx plugins:install sfdx-git-packager`
+
 
 ## ✨Features
 
@@ -30,6 +37,20 @@ Run `sfdx plugins:install sfdx-git-packager`
 
 - Partial profile deployments
 - ??? (please submit an issue if you run into anything else)
+
+### Basic Example
+
+1. You create a new branch called `my-branch` from `master` (in this case `master` is in sync with the org you will be deploying to)
+
+2. You commit the following changes
+<img width="724" alt="is_stuff__c_field-meta_xml__Index__—_my-sandbox" src="https://user-images.githubusercontent.com/5217568/93001281-1f6dc180-f4eb-11ea-9add-dc7543124030.png">
+
+3. you run `sfdx git:package -d dist/my-feature` (defaults `--sourceref` to current ref and `--targetref` to master)
+
+4. the changes you made above will be packaged into the `dist` folder
+<img width="936" alt="destructiveChangesPost_xml_—_my-sandbox" src="https://user-images.githubusercontent.com/5217568/93001351-9d31cd00-f4eb-11ea-9668-0ba8a449d7a6.png">
+
+5. You can now deploy to your target org using `sfdx force:mdapi:deploy -d dist/my-feature`
 
 ## 🔨 Usage
 
