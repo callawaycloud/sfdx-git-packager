@@ -104,7 +104,7 @@ EXAMPLES
   $ sfdx git:package -s feature-b -d deploy/feature-b
 ```
 
-_See code: [lib/commands/git/package.js](https://github.com/callawaycloud/sfdx-git-packager/blob/v0.3.1/lib/commands/git/package.js)_
+_See code: [lib/commands/git/package.js](https://github.com/callawaycloud/sfdx-git-packager/blob/v0.3.2/lib/commands/git/package.js)_
 <!-- commandsstop -->
 
 ### Ignore Files

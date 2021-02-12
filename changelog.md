@@ -1,4 +1,14 @@
 # Changelog
+## 0.3.3
+### Added
+
+- Support for `.objectTranslation`
+
+## 0.3.2
+
+### Added
+
+- improved readme
 
 ## 0.3.1
 
