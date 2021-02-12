@@ -31,7 +31,8 @@ const metadataResolvers: MetadataResolver[] = [
         '.component',
         '.email',
         '.page',
-        '.trigger'
+        '.trigger',
+        '.objectTranslation'
       ].includes(extname(path));
     },
     getMetadataPaths: async (path: string) => {
