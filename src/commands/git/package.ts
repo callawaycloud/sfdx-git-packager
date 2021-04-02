@@ -1,13 +1,18 @@
-import { flags, SfdxCommand } from '@salesforce/command';
-import { fs, Messages } from '@salesforce/core';
-import { AnyJson } from '@salesforce/ts-types';
-import * as jsdiff from 'diff';
-import { promises as fsPromise } from 'fs';
-import { dirname, isAbsolute, join, relative } from 'path';
-import * as tmp from 'tmp';
-import { getResolver, resolveMetadata } from '../../metadataResolvers';
-import { convertToMetadata } from '../../sfdx';
-import { copyFileFromRef, getIgnore, purgeFolder, spawnPromise } from '../../util';
+import { flags, SfdxCommand } from "@salesforce/command";
+import { fs, Messages } from "@salesforce/core";
+import { AnyJson } from "@salesforce/ts-types";
+import * as jsdiff from "diff";
+import { promises as fsPromise } from "fs";
+import { dirname, isAbsolute, join, relative } from "path";
+import * as tmp from "tmp";
+import { getResolver, resolveMetadata } from "../../metadataResolvers";
+import { convertToMetadata } from "../../sfdx";
+import {
+  copyFileFromRef,
+  getIgnore,
+  purgeFolder,
+  spawnPromise,
+} from "../../util";
 
 interface DiffResults {
   changed: string[];
@@ -19,32 +24,53 @@ Messages.importMessagesDirectory(__dirname);
 
 // Load the specific messages for this file. Messages from @salesforce/command, @salesforce/core,
 // or any library that is using the messages framework can also be loaded this way.
-const messages = Messages.loadMessages('sfdx-git-packager', 'package');
+const messages = Messages.loadMessages("sfdx-git-packager", "package");
 
 export default class Package extends SfdxCommand {
-
-  public static description = messages.getMessage('commandDescription');
+  public static description = messages.getMessage("commandDescription");
 
   public static examples = [
-    '$ sfdx git:package -s my-awesome-feature -t master -d deploy/my-feature',
-    '$ sfdx git:package -d deploy/my-feature',
-    '$ sfdx git:package -s feature-b -d deploy/feature-b'
+    "$ sfdx git:package -s my-awesome-feature -t master -d deploy/my-feature",
+    "$ sfdx git:package -d deploy/my-feature",
+    "$ sfdx git:package -s feature-b -d deploy/feature-b",
   ];
 
   // not sure what this does...
-  public static args = [
-    { name: 'file' }
-  ];
+  public static args = [{ name: "file" }];
 
   protected static flagsConfig = {
     // flag with a value (-n, --name=VALUE)
-    sourceref: flags.string({ char: 's', description: messages.getMessage('fromBranchDescription'), default: 'HEAD' }),
-    targetref: flags.string({ char: 't', description: messages.getMessage('toBranchDescription'), default: 'master' }),
-    outputdir: flags.string({ char: 'd', description: messages.getMessage('outputdirDescription'), required: true }),
-    ignorewhitespace: flags.boolean({ char: 'w', description: messages.getMessage('ignoreWhitespace') }),
-    purge: flags.boolean({ description: messages.getMessage('purgeDescription') }),
-    nodelete: flags.boolean({ description: messages.getMessage('nodelete') }),
-    force: flags.boolean({ char: 'f', description: messages.getMessage('force') })
+    sourceref: flags.string({
+      char: "s",
+      description: messages.getMessage("fromBranchDescription"),
+      default: "HEAD",
+    }),
+    targetref: flags.string({
+      char: "t",
+      description: messages.getMessage("toBranchDescription"),
+      default: "master",
+    }),
+    outputdir: flags.string({
+      char: "d",
+      description: messages.getMessage("outputdirDescription"),
+      required: true,
+    }),
+    workingdir: flags.string({
+      char: "D",
+      description: messages.getMessage("workingdirDescription"),
+    }),
+    ignorewhitespace: flags.boolean({
+      char: "w",
+      description: messages.getMessage("ignoreWhitespace"),
+    }),
+    purge: flags.boolean({
+      description: messages.getMessage("purgeDescription"),
+    }),
+    nodelete: flags.boolean({ description: messages.getMessage("nodelete") }),
+    force: flags.boolean({
+      char: "f",
+      description: messages.getMessage("force"),
+    }),
   };
 
   // Comment this out if your command does not require an org username
@@ -63,20 +89,35 @@ export default class Package extends SfdxCommand {
   public async run(): Promise<AnyJson> {
     this.projectPath = this.project.getPath();
 
-    this.sourcePaths = ((await this.project.resolveProjectConfig())['packageDirectories'] as Array<{ path: string }>).map(d => d.path);
+    this.sourcePaths = ((await this.project.resolveProjectConfig())[
+      "packageDirectories"
+    ] as Array<{ path: string }>).map((d) =>
+      d.path.replace(this.flags.workingdir, "")
+    );
 
     const toBranch = this.flags.targetref;
     const fromBranch = this.flags.sourceref;
-    const diffArgs = ['--no-pager', 'diff', '--name-status', '--no-renames', toBranch, fromBranch];
+    const diffArgs = [
+      "--no-pager",
+      "diff",
+      "--name-status",
+      "--no-renames",
+      toBranch,
+      fromBranch,
+    ];
 
     try {
       const diffRefs = `${toBranch}...${fromBranch}`;
-      const aheadBehind = await spawnPromise('git', ['rev-list', '--left-right', '--count', diffRefs], { shell: true });
+      const aheadBehind = await spawnPromise(
+        "git",
+        ["rev-list", "--left-right", "--count", diffRefs],
+        { shell: true }
+      );
       const behind = Number(aheadBehind.split(/(\s+)/)[0]);
       if (behind > 0) {
         const behindMessage = `${fromBranch} is ${behind} commit(s) behind ${toBranch}!  You probably want to merge ${toBranch} into ${fromBranch} before building a package!`;
         if (!this.flags.force) {
-          this.ux.warn(behindMessage + '\nUse -f to generate package anyways.');
+          this.ux.warn(behindMessage + "\nUse -f to generate package anyways.");
           this.ux.error();
           this.exit(1);
           return;
@@ -85,13 +126,14 @@ export default class Package extends SfdxCommand {
         }
       }
 
-      const diff = await spawnPromise('git', diffArgs, { shell: true });
+      const diff = await spawnPromise("git", diffArgs, { shell: true });
       const diffResults = await this.getChanged(diff, fromBranch);
 
       const hasChanges = diffResults.changed.length > 0;
-      const hasDeletions = diffResults.removed.length > 0 && !this.flags.nodelete;
+      const hasDeletions =
+        diffResults.removed.length > 0 && !this.flags.nodelete;
       if (!hasChanges && !hasDeletions) {
-        this.ux.warn('No changes found!');
+        this.ux.warn("No changes found!");
         this.exit(1);
         return;
       }
@@ -101,14 +143,22 @@ export default class Package extends SfdxCommand {
       let tmpDeleteProj: string;
       let tempDeleteProjConverted: string;
       if (hasDeletions) {
-        tmpDeleteProj = await this.setupTmpProject(diffResults.removed, toBranch);
+        tmpDeleteProj = await this.setupTmpProject(
+          diffResults.removed,
+          toBranch
+        );
         tempDeleteProjConverted = await this.mkTempDir();
         await convertToMetadata(tempDeleteProjConverted, tmpDeleteProj);
       }
 
       // create a temp project so we can leverage force:source:convert for primary deploy
-      const tmpProject = await this.setupTmpProject(diffResults.changed, fromBranch);
-      const outDir = isAbsolute(this.flags.outputdir) ? this.flags.outputdir : join(this.projectPath, this.flags.outputdir);
+      const tmpProject = await this.setupTmpProject(
+        diffResults.changed,
+        fromBranch
+      );
+      const outDir = isAbsolute(this.flags.outputdir)
+        ? this.flags.outputdir
+        : join(this.projectPath, this.flags.outputdir);
       try {
         const stat = await fs.stat(outDir);
         if (stat.isDirectory()) {
@@ -116,10 +166,12 @@ export default class Package extends SfdxCommand {
           if (this.flags.purge) {
             purge = true;
           } else {
-            const resp = await this.ux.prompt(`The output path ${outDir} already exists.  How would you like to continue? (purge | merge | exit)`);
-            if (resp.toLocaleLowerCase() === 'purge') {
+            const resp = await this.ux.prompt(
+              `The output path ${outDir} already exists.  How would you like to continue? (purge | merge | exit)`
+            );
+            if (resp.toLocaleLowerCase() === "purge") {
               purge = true;
-            } else if (resp.toLocaleLowerCase() !== 'merge') {
+            } else if (resp.toLocaleLowerCase() !== "merge") {
               this.exit(1);
               return;
             }
@@ -133,10 +185,9 @@ export default class Package extends SfdxCommand {
               this.exit(1);
               return;
             }
-
           }
         }
-      } catch (e) { }
+      } catch (e) {}
 
       await fs.mkdirp(outDir);
 
@@ -144,7 +195,10 @@ export default class Package extends SfdxCommand {
         await convertToMetadata(outDir, tmpProject);
       }
       if (hasDeletions) {
-        await fsPromise.copyFile(`${tempDeleteProjConverted}/package.xml`, `${outDir}/destructiveChangesPost.xml`);
+        await fsPromise.copyFile(
+          `${tempDeleteProjConverted}/package.xml`,
+          `${outDir}/destructiveChangesPost.xml`
+        );
         if (!hasChanges) {
           await fsPromise.writeFile(
             `${outDir}/package.xml`,
@@ -173,18 +227,28 @@ export default class Package extends SfdxCommand {
     return tempDir;
   }
 
-  private async setupTmpProject(changed: string[], sourceRef: string | undefined) {
+  private async setupTmpProject(
+    changed: string[],
+    sourceRef: string | undefined
+  ) {
     const tempDir = await this.mkTempDir();
 
     for (const sourcePath of this.sourcePaths) {
       await fs.mkdirp(join(tempDir, sourcePath));
     }
 
-    await copyFileFromRef('sfdx-project.json', sourceRef, join(tempDir, 'sfdx-project.json'));
+    await copyFileFromRef(
+      "sfdx-project.json",
+      sourceRef,
+      join(tempDir, "sfdx-project.json")
+    );
 
     for (const path of changed) {
-
-      const resolvedMetadata = await resolveMetadata(path, sourceRef, this.flags.targetref);
+      const resolvedMetadata = await resolveMetadata(
+        path,
+        sourceRef,
+        this.flags.targetref
+      );
 
       if (!resolvedMetadata) {
         this.ux.warn(`Could not resolve metadata for ${path}`);
@@ -198,7 +262,7 @@ export default class Package extends SfdxCommand {
         }
         const newPath = join(tempDir, mdPath);
         await fs.mkdirp(dirname(newPath));
-        if (typeof resolved.source === 'string') {
+        if (typeof resolved.source === "string") {
           await fs.writeFile(newPath, resolved.source);
         } else {
           await resolved.source(newPath);
@@ -209,18 +273,21 @@ export default class Package extends SfdxCommand {
     return tempDir;
   }
 
-  private async getChanged(diffOutput: string, targetRef: string): Promise<DiffResults> {
+  private async getChanged(
+    diffOutput: string,
+    targetRef: string
+  ): Promise<DiffResults> {
     const ignore = await getIgnore(this.projectPath);
     const lines = diffOutput.split(/\r?\n/);
     // tuple of additions, deletions
     const changed = [];
     let removed = [];
     for (const line of lines) {
-      const parts = line.split('\t');
+      const parts = line.split("\t");
       const status = parts[0];
       const path = parts[1];
 
-      if (!path || path.startsWith('.') || ignore.ignores(path)) {
+      if (!path || path.startsWith(".") || ignore.ignores(path)) {
         continue;
       }
 
@@ -233,13 +300,19 @@ export default class Package extends SfdxCommand {
         continue;
       }
 
-      if (status === 'D') {
+      if (status === "D") {
         removed.push(path);
       } else {
-        if (status === 'M') {
+        if (status === "M") {
           if (this.flags.ignorewhitespace) {
-            const a = await spawnPromise('git', ['show', `${this.flags.targetref}:${path}`]);
-            const b = await spawnPromise('git', ['show', `${this.flags.sourceref}:${path}`]);
+            const a = await spawnPromise("git", [
+              "show",
+              `${this.flags.targetref}:${path}`,
+            ]);
+            const b = await spawnPromise("git", [
+              "show",
+              `${this.flags.sourceref}:${path}`,
+            ]);
 
             if (!hasNonWhitespaceChanges(a, b)) {
               continue;
@@ -249,7 +322,6 @@ export default class Package extends SfdxCommand {
 
         changed.push(path);
       }
-
     }
 
     // check for directory style resources that are full deletions (and are actually changes)
@@ -263,7 +335,6 @@ export default class Package extends SfdxCommand {
         const metadataPaths = await resolver.getMetadataPaths(path, targetRef);
         // current implementation will return meta file regardless of whether it exists in org or not
         if (metadataPaths.length > 1) {
-
           notFullyRemoved.push(path);
           for (const mdPath of metadataPaths) {
             if (!changed.includes(mdPath)) {
@@ -274,18 +345,20 @@ export default class Package extends SfdxCommand {
       }
     }
 
-    removed = removed.filter(path => !notFullyRemoved.includes(path));
+    removed = removed.filter((path) => !notFullyRemoved.includes(path));
     return {
       changed,
-      removed
+      removed,
     };
   }
-
 }
 
 // checks two strings and returns true if they have "non-whitespace" changes (spaces or newlines)
 function hasNonWhitespaceChanges(a: string, b: string) {
-  const diffResults = jsdiff.diffLines(a, b, { ignoreWhitespace: true, newlineIsToken: true });
+  const diffResults = jsdiff.diffLines(a, b, {
+    ignoreWhitespace: true,
+    newlineIsToken: true,
+  });
   for (const result of diffResults) {
     if (result.added || result.removed) {
       return true;
