@@ -340,6 +340,13 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
+"@types/istextorbinary@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@types/istextorbinary/-/istextorbinary-2.3.0.tgz#1e58f580fc74f0a7f875d171ee4324e3349bfbb4"
+  integrity sha512-8Xl9onTFM8VO6cgu6aYt5o45m9mh4xbhfjLtv9A13F64R5/wCwl2Xdrt6I+M6+8j/4ndkvxdBNPbLTFdYhn+iA==
+  dependencies:
+    "@types/node" "*"
+
 "@types/jsforce@1.9.2":
   version "1.9.2"
   resolved "https://registry.yarnpkg.com/@types/jsforce/-/jsforce-1.9.2.tgz#a321866dcb7c9c4c57a1d794d54ec52e3f07ff0b"
@@ -580,6 +587,11 @@ bcrypt-pbkdf@^1.0.0:
   integrity sha1-pDAdOJtqQ/m2f/PKEaP2Y342Dp4=
   dependencies:
     tweetnacl "^0.14.3"
+
+binaryextensions@^4.15.0:
+  version "4.15.0"
+  resolved "https://registry.yarnpkg.com/binaryextensions/-/binaryextensions-4.15.0.tgz#c63a502e0078ff1b0e9b00a9f74d3c2b0f8bd32e"
+  integrity sha512-MkUl3szxXolQ2scI1PM14WOT951KnaTNJ0eMKg7WzOI4kvSxyNo/Cygx4LOBNhwyINhAuSQpJW1rYD9aBSxGaw==
 
 bl@^3.0.0:
   version "3.0.0"
@@ -1127,6 +1139,14 @@ ecdsa-sig-formatter@1.0.11:
   dependencies:
     safe-buffer "^5.0.1"
 
+editions@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/editions/-/editions-6.1.0.tgz#ba6c6cf9f4bb571d9e53ea34e771a602e5a66549"
+  integrity sha512-h6nWEyIocfgho9J3sTSuhU/WoFOu1hTX75rPBebNrbF38Y9QFDjCDizYXdikHTySW7Y3mSxli8bpDz9RAtc7rA==
+  dependencies:
+    errlop "^4.0.0"
+    version-range "^1.0.0"
+
 "emoji-regex@>=6.0.0 <=6.1.1":
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-6.1.1.tgz#c6cd0ec1b0642e2a3c67a1137efc5e796da4f88e"
@@ -1143,6 +1163,11 @@ end-of-stream@^1.1.0, end-of-stream@^1.4.1:
   integrity sha512-1MkrZNvWTKCaigbn+W15elq2BB/L22nqrSY5DKlo3X6+vclJm8Bb5djXJBmEX6fS3+zCh/F4VBK5Z2KxJt4s2Q==
   dependencies:
     once "^1.4.0"
+
+errlop@^4.0.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/errlop/-/errlop-4.1.0.tgz#8e7b8f4f1bf0a6feafce4d14f0c0cf4bf5ef036b"
+  integrity sha512-vul6gGBuVt0M2TPi1/WrcL86+Hb3Q2Tpu3TME3sbVhZrYf7J1ZMHCodI25RQKCVurh56qTfvgM0p3w5cT4reSQ==
 
 error-ex@^1.3.1:
   version "1.3.2"
@@ -1693,9 +1718,9 @@ he@1.1.1:
   integrity sha1-k0EP0hsAlzUVH4howvJx80J+I/0=
 
 hosted-git-info@^2.1.4:
-  version "2.8.4"
-  resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.8.4.tgz#44119abaf4bc64692a16ace34700fed9c03e2546"
-  integrity sha512-pzXIvANXEFrc5oFFXRMkbLPQ2rXRoDERwDLyrcUxGhaZhgP54BBSl9Oheh7Vv0T090cszWBxPjkQQ5Sq1PbBRQ==
+  version "2.8.9"
+  resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.8.9.tgz#dffc0bf9a21c02209090f2aa69429e1414daf3f9"
+  integrity sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==
 
 http-call@^5.1.2:
   version "5.2.5"
@@ -2019,6 +2044,15 @@ istanbul-reports@^2.2.4:
   integrity sha512-SKi4rnMyLBKe0Jy2uUdx28h8oG7ph2PPuQPvIAh31d+Ci+lSiEu4C+h3oBPuJ9+mPKhOyW0M8gY4U5NM1WLeXA==
   dependencies:
     handlebars "^4.1.2"
+
+istextorbinary@^5.8.0:
+  version "5.12.0"
+  resolved "https://registry.yarnpkg.com/istextorbinary/-/istextorbinary-5.12.0.tgz#2f84777838668fdf524c305a2363d6057aaeec84"
+  integrity sha512-wLDRWD7qpNTYubk04+q3en1+XZGS4vYWK0+SxNSXJLaITMMEK+J3o/TlOMyULeH1qozVZ9uUkKcyMA8odyxz8w==
+  dependencies:
+    binaryextensions "^4.15.0"
+    editions "^6.1.0"
+    textextensions "^5.11.0"
 
 js-tokens@^4.0.0:
   version "4.0.0"
@@ -3450,6 +3484,11 @@ test-exclude@^5.2.3:
     read-pkg-up "^4.0.0"
     require-main-filename "^2.0.0"
 
+textextensions@^5.11.0:
+  version "5.12.0"
+  resolved "https://registry.yarnpkg.com/textextensions/-/textextensions-5.12.0.tgz#b908120b5c1bd4bb9eba41423d75b176011ab68a"
+  integrity sha512-IYogUDaP65IXboCiPPC0jTLLBzYlhhw2Y4b0a2trPgbHNGGGEfuHE6tds+yDcCf4mpNDaGISFzwSSezcXt+d6w==
+
 tmp@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/tmp/-/tmp-0.1.0.tgz#ee434a4e22543082e294ba6201dcc6eafefa2877"
@@ -3693,6 +3732,18 @@ verror@1.10.0:
     assert-plus "^1.0.0"
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
+
+version-compare@^1.0.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/version-compare/-/version-compare-1.1.0.tgz#7b3e67e7e6cec5c72d9c9e586f8854e419ade17c"
+  integrity sha512-zVKtPOJTC9x23lzS4+4D7J+drq80BXVYAmObnr5zqxxFVH7OffJ1lJlAS7LYsQNV56jx/wtbw0UV7XHLrvd6kQ==
+
+version-range@^1.0.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/version-range/-/version-range-1.1.0.tgz#1c233064202ee742afc9d56e21da3b2e15260acf"
+  integrity sha512-R1Ggfg2EXamrnrV3TkZ6yBNgITDbclB3viwSjbZ3+eK0VVNK4ajkYJTnDz5N0bIMYDtK9MUBvXJUnKO5RWWJ6w==
+  dependencies:
+    version-compare "^1.0.0"
 
 websocket-driver@>=0.5.1:
   version "0.7.3"
