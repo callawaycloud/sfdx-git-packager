@@ -340,6 +340,13 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
+"@types/istextorbinary@^2.3.0":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@types/istextorbinary/-/istextorbinary-2.3.1.tgz#71628af15801ecc336d196bc0685cc71e31bee7e"
+  integrity sha512-Fu3zxViCkMd2oEkwQ1ITv16MCfybykq1VYjoeqLcYjeq3RhWDnwMb+Ang0MP3xwq17kDkCt8XQ7omTJ/1ukSoQ==
+  dependencies:
+    "@types/node" "*"
+
 "@types/jsforce@1.9.2":
   version "1.9.2"
   resolved "https://registry.yarnpkg.com/@types/jsforce/-/jsforce-1.9.2.tgz#a321866dcb7c9c4c57a1d794d54ec52e3f07ff0b"
@@ -580,6 +587,11 @@ bcrypt-pbkdf@^1.0.0:
   integrity sha1-pDAdOJtqQ/m2f/PKEaP2Y342Dp4=
   dependencies:
     tweetnacl "^0.14.3"
+
+binaryextensions@^4.18.0:
+  version "4.18.0"
+  resolved "https://registry.yarnpkg.com/binaryextensions/-/binaryextensions-4.18.0.tgz#22aeada2d14de062c60e8ca59a504a5636a76ceb"
+  integrity sha512-PQu3Kyv9dM4FnwB7XGj1+HucW+ShvJzJqjuw1JkKVs1mWdwOKVcRjOi+pV9X52A0tNvrPCsPkbFFQb+wE1EAXw==
 
 bl@^3.0.0:
   version "3.0.0"
@@ -2020,6 +2032,14 @@ istanbul-reports@^2.2.4:
   dependencies:
     handlebars "^4.1.2"
 
+istextorbinary@^5.8.0:
+  version "5.15.0"
+  resolved "https://registry.yarnpkg.com/istextorbinary/-/istextorbinary-5.15.0.tgz#6e726d1dbfb8c2c1c0a50b13fb57103259368c8d"
+  integrity sha512-4/Fz28VGgSCb5j6kGJqL1iU28WAFMkcx+uUWaa/pzpGqz5bMIoPzW4F6Nbf/7XFx7nSa+qD6HHprDrilB4RNzw==
+  dependencies:
+    binaryextensions "^4.18.0"
+    textextensions "^5.13.0"
+
 js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -2753,9 +2773,9 @@ path-key@^2.0.0, path-key@^2.0.1:
   integrity sha1-QRyttXTFoUDTpLGRDUDYDMn0C0A=
 
 path-parse@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.6.tgz#d62dbb5679405d72c4737ec58600e9ddcf06d24c"
-  integrity sha512-GSmOT2EbHrINBf9SR7CDELwlJ8AENk3Qn7OikK4nFYAu3Ote2+JYNVvkpAEQm3/TLNEJFD/xZJjzyxg3KBWOzw==
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.7.tgz#fbc114b60ca42b30d9daf5858e4bd68bbedb6735"
+  integrity sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==
 
 path-to-regexp@^1.7.0:
   version "1.7.0"
@@ -3449,6 +3469,11 @@ test-exclude@^5.2.3:
     minimatch "^3.0.4"
     read-pkg-up "^4.0.0"
     require-main-filename "^2.0.0"
+
+textextensions@^5.13.0:
+  version "5.14.0"
+  resolved "https://registry.yarnpkg.com/textextensions/-/textextensions-5.14.0.tgz#a6ff6aee5faaa751e6157d422c722a2bfd59eedf"
+  integrity sha512-4cAYwNFNYlIAHBUo7p6zw8POUvWbZor+/R0Tanv+rIhsauEyV9QSrEXL40pI+GfTQxKX8k6Tyw6CmdSDSmASrg==
 
 tmp@^0.1.0:
   version "0.1.0"
