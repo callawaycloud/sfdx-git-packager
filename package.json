@@ -1,82 +1,91 @@
 {
-  "name": "sfdx-git-packager",
-  "description": "Generates a package.xml for difference between two branches",
-  "version": "0.3.3",
-  "author": "Charlie Jonas @ChuckJonas",
-  "bugs": "https://github.com/callawaycloud/sfdx-git-packager/issues",
-  "dependencies": {
-    "@oclif/command": "^1",
-    "@oclif/config": "^1",
-    "@oclif/errors": "^1",
-    "@salesforce/command": "^1.4.1",
-    "@salesforce/core": "^1.3.2",
-    "diff": "^4.0.1",
-    "ignore": "^5.1.4",
-    "istextorbinary": "^5.8.0",
-    "tmp": "^0.1.0",
-    "tslib": "^1",
-    "xml-js": "^1.6.11",
-    "xml2js": "^0.4.22"
-  },
-  "devDependencies": {
-    "@oclif/dev-cli": "^1",
-    "@oclif/plugin-help": "^2",
-    "@oclif/test": "^1",
-    "@salesforce/dev-config": "1.4.1",
-    "@types/chai": "^4",
-    "@types/diff": "^4.0.2",
-    "@types/istextorbinary": "^2.3.0",
-    "@types/mocha": "^5",
-    "@types/node": "^10",
-    "@types/tmp": "^0.1.0",
-    "@types/xml-js": "^1.0.0",
-    "@types/xml2js": "^0.4.5",
-    "chai": "^4",
-    "dir-compare": "^1.7.3",
-    "globby": "^8",
-    "mocha": "^5",
-    "nyc": "^14",
-    "rimraf": "^3.0.0",
-    "ts-node": "^8",
-    "tslint": "^5"
-  },
-  "engines": {
-    "node": ">=8.0.0"
-  },
-  "files": [
-    "/lib",
-    "/messages",
-    "/npm-shrinkwrap.json",
-    "/oclif.manifest.json"
-  ],
-  "homepage": "https://github.com/callawaycloud/sfdx-git-packager",
-  "keywords": [
-    "sfdx-plugin"
-  ],
-  "license": "MIT",
-  "oclif": {
-    "commands": "./lib/commands",
-    "bin": "sfdx",
-    "topics": {
-      "git": {
-        "description": "Generates a package.xml for difference between two branches"
-      }
+    "name": "sfdx-git-packager",
+    "description": "Generates a package.xml for difference between two branches",
+    "version": "0.3.4",
+    "author": "Charlie Jonas @ChuckJonas",
+    "bugs": "https://github.com/callawaycloud/sfdx-git-packager/issues",
+    "dependencies": {
+        "@oclif/core": "^1",
+        "@salesforce/command": "^5",
+        "@salesforce/core": "^3",
+        "diff": "^4.0.1",
+        "ignore": "^5.1.4",
+        "istextorbinary": "^5.8.0",
+        "mkdirp": "^2.1.3",
+        "tmp": "^0.1.0",
+        "tslib": "^2",
+        "xml-js": "^1.6.11"
     },
-    "devPlugins": [
-      "@oclif/plugin-help"
-    ]
-  },
-  "repository": "https://github.com/callawaycloud/sfdx-git-packager.git",
-  "scripts": {
-    "postpack": "rm -f oclif.manifest.json",
-    "posttest": "tslint -p test -t stylish",
-    "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
-    "test": "nyc --extension .ts mocha --timeout 99999 --forbid-only \"test/{*.test.ts,!(integration)/**/*.test.ts}\"",
-    "test:integration": "nyc --extension .ts mocha --timeout 99999 --forbid-only \"test/integration/**/*.test.ts\"",
-    "test:generate:output": "npm run gen",
-    "version": "oclif-dev readme && git add README.md",
-    "tgp": "mv test/integration/project/.git test/integration/project/.notgit",
-    "tgu": "mv test/integration/project/.notgit test/integration/project/.git",
-    "gen": "ts-node test/integration/genIntegrationTestOutput.ts"
-  }
+    "devDependencies": {
+        "@oclif/plugin-help": "^5.2.5",
+        "@types/diff": "^4.0.2",
+        "@types/istextorbinary": "^2.3.0",
+        "@types/node": "^10",
+        "@types/tmp": "^0.1.0",
+        "@types/xml-js": "^1.0.0",
+        "@types/xml2js": "^0.4.5",
+        "dir-compare": "^4.0.0",
+        "globby": "^11",
+        "@oclif/test": "^2",
+        "@salesforce/ts-sinon": "^1",
+        "@types/chai": "^4",
+        "@types/mocha": "^8",
+        "@typescript-eslint/eslint-plugin": "^4",
+        "@typescript-eslint/parser": "^4",
+        "chai": "^4",
+        "eslint": "^7",
+        "eslint-config-prettier": "^8",
+        "eslint-plugin-header": "^3",
+        "eslint-plugin-import": "^2",
+        "eslint-plugin-jsdoc": "^35",
+        "eslint-plugin-prettier": "^3",
+        "eslint-plugin-typescript": "^0",
+        "mocha": "^9",
+        "nyc": "^15",
+        "oclif": "^3",
+        "prettier": "^2",
+        "sinon": "10.0.0",
+        "ts-node": "^10",
+        "typescript": "4"
+    },
+    "engines": {
+        "node": ">=14.0.0"
+    },
+    "files": [
+        "/lib",
+        "/messages",
+        "/npm-shrinkwrap.json",
+        "/oclif.manifest.json"
+    ],
+    "homepage": "https://github.com/callawaycloud/sfdx-git-packager",
+    "keywords": [
+        "sfdx-plugin"
+    ],
+    "license": "MIT",
+    "oclif": {
+        "commands": "./lib/commands",
+        "bin": "sfdx",
+        "topics": {
+            "git": {
+                "description": "Generates a package.xml for difference between two branches"
+            }
+        },
+        "devPlugins": [
+            "@oclif/plugin-help"
+        ]
+    },
+    "repository": "https://github.com/callawaycloud/sfdx-git-packager.git",
+    "scripts": {
+        "build": "tsc -p .",
+        "lint": "eslint src/**/*.ts test/**/*.ts",
+        "postpack": "rm -f oclif.manifest.json",
+        "prepack": "rm -rf lib && tsc -b && oclif manifest && oclif readme",
+        "test": "nyc --extension .ts mocha --timeout 99999 --forbid-only \"test/{*.test.ts,!(integration)/**/*.test.ts}\"",
+        "test:integration": "nyc --extension .ts --require ts-node/register mocha --timeout 99999 --forbid-only \"test/integration/**/*.test.ts\"",
+        "test:generate:output": "npm run gen",
+        "version": "oclif readme && git add README.md",
+        "tgp": "mv test/integration/project/.git test/integration/project/.notgit",
+        "tgu": "mv test/integration/project/.notgit test/integration/project/.git",
+        "gen": "ts-node test/integration/genIntegrationTestOutput.ts"
+    }
 }

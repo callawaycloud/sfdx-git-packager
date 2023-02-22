@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
-  <types>
-    <name>Layout</name>
-    <members>Bar__c-Bar Layout</members>
-  </types>
-  <types>
-    <name>CustomObject</name>
-    <members>Bar__c</members>
-  </types>
-  <version>45.0</version>
+    <types>
+        <members>Bar__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Bar__c-Bar Layout</members>
+        <name>Layout</name>
+    </types>
+    <version>45.0</version>
 </Package>
